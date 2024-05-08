@@ -1,14 +1,50 @@
 import Datastore from '@seald-io/nedb'
 import {MessageTypes} from '../baileys/mensagem.js'
-import path from 'node:path'
-import fs from 'fs-extra'
 import moment from "moment-timezone"
-var db = {
-    grupos : new Datastore({filename : './database/db/grupos.db', autoload: true}),
-    contador : new Datastore({filename : './database/db/contador.db', autoload: true})
+
+const db = {
+    grupos : new Datastore({filename : './database/dados_salvos/grupos.db', autoload: true}),
+    contador : new Datastore({filename : './database/dados_salvos/contador.db', autoload: true})
 }
 
-//##################### FUNCOES GRUPO #########################
+async function Grupo(id_grupo, dados){
+    const 
+    ID_GRUPO = id_grupo,
+    NOME = dados.nome,
+    DESCRICAO = dados.descricao,
+    PARTICIPANTES = dados.participantes,
+    ADMINS = dados.admins,
+    DONO = dados.dono,
+    RESTRITO_MSG = dados.restrito,
+    MUTAR = false,
+    BEMVINDO = {status: false, msg : ''},
+    ANTIFAKE = {status: false, ddi_liberados: []},
+    ANTILINK = false,
+    ANTIFLOOD = {status: false, max: 10, intervalo: 10, msgs: []},
+    AUTOSTICKER = false,
+    CONTADOR = {status: false, inicio : ''},
+    BLOCK_CMDS = [],
+    LISTA_NEGRA = []
+
+    return {
+        id_grupo : ID_GRUPO,
+        nome : NOME,
+        descricao : DESCRICAO,
+        participantes: PARTICIPANTES,
+        admins: ADMINS,
+        dono: DONO,
+        restrito_msg: RESTRITO_MSG,
+        mutar: MUTAR,
+        bemvindo: BEMVINDO,
+        antifake: ANTIFAKE,
+        antilink: ANTILINK,
+        antiflood: ANTIFLOOD,
+        autosticker: AUTOSTICKER,
+        contador: CONTADOR,
+        block_cmds: BLOCK_CMDS,
+        lista_negra: LISTA_NEGRA
+    }
+}
 
 //### GERAL
 export const verificarGrupo = async(id_grupo) =>{
@@ -17,40 +53,7 @@ export const verificarGrupo = async(id_grupo) =>{
 }
 
 export const registrarGrupo = async(id_grupo, dados)=>{
-    let cadastro_grupo = {
-        id_grupo,
-        nome : dados.titulo,
-        descricao : dados.descricao,
-        participantes: dados.participantes,
-        admins: dados.admins,
-        dono: dados.dono,
-        restrito_msg: dados.restrito,
-        mutar: false,
-        bemvindo: {status: false, msg: ""},
-        antifake: {status: false, ddi_liberados:[]},
-        antilink: false,
-        antiflood: false,
-        autosticker: false,
-        contador: {status:false, inicio: ''},
-        block_cmds: [],
-        lista_negra: []
-    }
-    await db.grupos.insertAsync(cadastro_grupo)
-}
-
-export const resetarGrupos = async()=>{
-    db.grupos.updateAsync({}, 
-    {$set: {
-    mutar: false,
-    bemvindo: {status: false, msg:""},
-    antifake: {status: false, ddi_liberados:[]},
-    antilink: false,
-    antiflood: false,
-    autosticker: false,
-    contador: {status:false, inicio: ''},
-    block_cmds: [],
-    lista_negra: []
-    }}, {multi: true})
+    await db.grupos.insertAsync(await Grupo(id_grupo, dados))
 }
 
 export const obterGrupo = async(id_grupo)=>{
@@ -167,20 +170,8 @@ export const alterarContador = async(id_grupo, status)=>{
     await db.grupos.updateAsync({id_grupo}, {$set:{"contador.status":status, "contador.inicio":data_atual}})
 }
 
-export const alterarAntiFlood = async(id_grupo, status = true, max = 10, intervalo=10)=>{
-    db.grupos.updateAsync({id_grupo}, {$set:{antiflood:status}})
-    let antifloodJson = JSON.parse(fs.readFileSync(path.resolve('database/db/antiflood.json')))
-    if(status){
-        antifloodJson.push({
-            id_grupo: id_grupo,
-            max: parseInt(max),
-            intervalo : parseInt(intervalo),
-            msgs : []
-        })
-    } else {
-        antifloodJson.splice(antifloodJson.findIndex(item => item.id_grupo == id_grupo), 1)
-    }
-    fs.writeFileSync(path.resolve('database/db/antiflood.json'), JSON.stringify(antifloodJson))
+export const alterarAntiFlood = async(id_grupo, status = true, max, intervalo)=>{
+    await db.grupos.updateAsync({id_grupo}, {$set:{'antiflood.status':status, 'antiflood.max': max, 'antiflood.intervalo': intervalo}})
 }
 
 //### LISTA NEGRA
@@ -199,46 +190,39 @@ export const removerListaNegra = async(id_grupo, id_usuario)=>{
 //###
 
 //### ANTIFLOOD GRUPO
-export const grupoInfoAntiFlood = (id_grupo)=>{
-    let antifloodJson = JSON.parse(fs.readFileSync(path.resolve('database/db/antiflood.json'))), grupoIndex = antifloodJson.findIndex(item => item.id_grupo == id_grupo)
-    return antifloodJson[grupoIndex]
-}
-
 export const addMsgFlood = async(id_grupo, usuario_msg)=>{
     try{
-        let antifloodJson = JSON.parse(fs.readFileSync(path.resolve('database/db/antiflood.json'))), grupoIndex = antifloodJson.findIndex(item => item.id_grupo == id_grupo)
-        let grupo_info = antifloodJson[grupoIndex], timestamp_atual = Math.round(new Date().getTime()/1000),  resposta = false
+        let grupo_info = await db.grupos.findOneAsync({id_grupo}), timestamp_atual = Math.round(new Date().getTime()/1000),  resposta = false
         //VERIFICA SE ALGUM MEMBRO JA PASSOU DO TEMPO DE TER AS MENSAGENS RESETADAS
-        for(let i = 0; i < grupo_info.msgs.length; i++){
-            if(timestamp_atual >= grupo_info.msgs[i].expiracao) grupo_info.msgs.splice(i,1)
+        for(let i = 0; i < grupo_info.antiflood.msgs.length; i++){
+            if(timestamp_atual >= grupo_info.antiflood.msgs[i].expiracao) grupo_info.antiflood.msgs.splice(i,1)
                 
         }
         //PESQUISA O INDICE DO USUARIO
-        let usuarioIndex = grupo_info.msgs.findIndex(usuario=> usuario.id_usuario == usuario_msg)
+        let usuarioIndex = grupo_info.antiflood.msgs.findIndex(usuario=> usuario.id_usuario == usuario_msg)
         //SE O USUARIO JÁ ESTIVER NA LISTA
         if(usuarioIndex != -1){
             //INCREMENTA A CONTAGEM
-            grupo_info.msgs[usuarioIndex].qtd++
-            let max_msg = grupo_info.max
-            if(grupo_info.msgs[usuarioIndex].qtd >= max_msg){
-                grupo_info.msgs.splice(usuarioIndex,1)
+            grupo_info.antiflood.msgs[usuarioIndex].qtd++
+            let max_msg = grupo_info.antiflood.max
+            if(grupo_info.antiflood.msgs[usuarioIndex].qtd >= max_msg){
+                grupo_info.antiflood.msgs.splice(usuarioIndex,1)
                 resposta = true
             } else{
                 resposta = false
             }
         } else {
             //ADICIONA O USUARIO NA LISTA
-            grupo_info.msgs.push({
+            grupo_info.antiflood.msgs.push({
                 id_usuario: usuario_msg,
-                expiracao: timestamp_atual + grupo_info.intervalo,
+                expiracao: timestamp_atual + grupo_info.antiflood.intervalo,
                 qtd: 1
             })
             resposta = false
         }
 
-        //ATUALIZAÇÃO DO JSON E RETORNO
-        antifloodJson[grupoIndex] = grupo_info
-        await fs.writeFileSync(path.resolve('database/db/antiflood.json'), JSON.stringify(antifloodJson))
+        //ATUALIZAÇÃO E RETORNO
+        await db.grupos.updateAsync({id_grupo}, {$set: {'antiflood.msgs': grupo_info.antiflood.msgs}})
         return resposta
     } catch(err){
         throw new Error(err)
@@ -266,17 +250,15 @@ export const registrarContagemTodos =async(id_grupo,usuarios)=>{
     }
 }
 
-export const existeUsuarioContador = async(id_grupo,id_usuario)=>{
+export const verificarRegistrarContagem = async(id_grupo,id_usuario)=>{
     let id_unico = `${id_grupo}-${id_usuario}`
     let contador = await db.contador.findOneAsync({id_unico})
-    if(contador == null) {
-        db.contador.insertAsync({id_grupo,id_usuario,id_unico,msg:0,imagem:0,audio:0,sticker:0,video:0,outro:0,texto:0})
-    }
+    if(!contador) await db.contador.insertAsync({id_grupo,id_usuario,id_unico,msg:0,imagem:0,audio:0,sticker:0,video:0,outro:0,texto:0})
 }
 
 export const registrarContagem = async(id_grupo,id_usuario)=>{
     let id_unico = `${id_grupo}-${id_usuario}`
-    db.contador.insertAsync({id_grupo,id_usuario,id_unico,msg:0,imagem:0,audio:0,sticker:0,video:0,outro:0,texto:0}) 
+    await db.contador.insertAsync({id_grupo,id_usuario,id_unico,msg:0,imagem:0,audio:0,sticker:0,video:0,outro:0,texto:0}) 
 }
 
 export const addContagem = async(id_grupo,id_usuario,tipo_msg)=>{
@@ -310,20 +292,14 @@ export const obterAtividade = async(id_grupo,id_usuario)=>{
     return atividade
 }
 
-export const alterarContagemUsuario = async(id_grupo,id_usuario,qtd)=>{
-    let resto = parseInt(qtd % 6)
-    let msgs_cada = parseInt((qtd - resto)/6)
-    await db.contador.updateAsync({id_grupo,id_usuario}, {$set:{msg:parseInt(qtd), texto:msgs_cada, imagem:msgs_cada, video:msgs_cada, sticker:msgs_cada, audio:msgs_cada, outro: resto }})
-}
-
 export const obterUsuariosInativos = async(id_grupo,min)=>{
     min = parseInt(min)
-    let usuarios_inativos = await db.contador.findAsync({id_grupo, msg: {$lt: min}},[ ["sort", {msg:-1}]])
+    let usuarios_inativos = await db.contador.findAsync({id_grupo, msg: {$lt: min}}).sort({msg: -1})
     return usuarios_inativos
 }
 
-export const obterUsuariosAtivos = async(id_grupo, limite) =>{
-    let usuarios_ativos = await db.contador.findAsync({id_grupo}, [ ["sort", {msg:-1}] , ['limit', limite] ] )
+export const obterUsuariosAtivos = async(id_grupo) =>{
+    let usuarios_ativos = await db.contador.findAsync({id_grupo}).sort({msg: -1})
     return usuarios_ativos
 }
 

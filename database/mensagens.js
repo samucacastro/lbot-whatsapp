@@ -1,14 +1,22 @@
 import Datastore from '@seald-io/nedb'
 
-const db = new Datastore({filename : './database/db/mensagens.db', autoload: true})
+const db = new Datastore({filename : './database/dados_salvos/mensagens.db', autoload: true})
+
+async function Mensagem(mensagem){
+    const 
+    CHATID = mensagem.key.remoteJid,
+    MENSAGEMID = mensagem.key.id,
+    MENSAGEM = JSON.stringify(mensagem.message)
+
+    return {
+        chatId : CHATID,
+        mensagemId : MENSAGEMID,
+        mensagem : MENSAGEM
+    }
+}
 
 export const armazenarMensagem = async(mensagem)=>{
-    let dadosMensagem = {
-        chatId : mensagem.key.remoteJid,
-        mensagemId : mensagem.key.id,
-        mensagem : JSON.stringify(mensagem.message)
-    }
-    await db.insertAsync(dadosMensagem)
+    await db.insertAsync(await Mensagem(mensagem))
 }
 
 export const obterMensagem = async(chatId, mensagemId)=>{
