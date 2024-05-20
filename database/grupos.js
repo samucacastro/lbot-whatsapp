@@ -20,6 +20,7 @@ async function Grupo(id_grupo, dados){
     BEMVINDO = {status: false, msg : ''},
     ANTIFAKE = {status: false, ddi_liberados: []},
     ANTILINK = false,
+    ANTILINKGRUPO = false,
     ANTIFLOOD = {status: false, max: 10, intervalo: 10, msgs: []},
     AUTOSTICKER = false,
     CONTADOR = {status: false, inicio : ''},
@@ -38,6 +39,7 @@ async function Grupo(id_grupo, dados){
         bemvindo: BEMVINDO,
         antifake: ANTIFAKE,
         antilink: ANTILINK,
+        antilinkGrupo: ANTILINKGRUPO,
         antiflood: ANTIFLOOD,
         autosticker: AUTOSTICKER,
         contador: CONTADOR,
@@ -159,6 +161,10 @@ export const alterarMutar = async(id_grupo, status)=>{
 
 export const alterarAntiLink = async(id_grupo, status)=>{
     await db.grupos.updateAsync({id_grupo}, {$set:{antilink: status}})
+}
+
+export const alterarAntiLinkGrupo = async(id_grupo, status)=>{
+    await db.grupos.updateAsync({id_grupo}, {$set:{antilinkGrupo: status}})
 }
 
 export const alterarAutoSticker = async(id_grupo, status)=>{

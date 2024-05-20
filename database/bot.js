@@ -37,7 +37,7 @@ export const botObjeto = {
 
 export const botCriarArquivo = async ()=>{
     const bot = botObjeto
-    await fs.writeFile(path.resolve("database/dados_salvos/bot.json"), JSON.stringify(bot))
+    await fs.writeFile(path.resolve("database/dados_salvos/bot.json"), JSON.stringify(botObjeto))
 }
 
 export const botInfoUpdate = ()=>{

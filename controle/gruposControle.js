@@ -334,6 +334,42 @@ export const filtroAntiLink = async(c, mensagemInfoCompleta)=>{
     }
 }
 
+// Recurso ANTI-LINK GRUPO
+
+export const alterarAntiLinkGrupo = async(grupoId, status = true)=>{
+    await gruposdb.alterarAntiLinkGrupo(grupoId, status)
+}
+
+export const filtroAntiLinkGrupo = async(c, mensagemInfoCompleta)=>{
+    try{
+        const {msgs_texto} = mensagemInfoCompleta
+        const {groupId, groupAdmins, isBotGroupAdmins } = mensagemInfoCompleta.grupo
+        const {sender, chatId, isGroupMsg, body, caption, id} = mensagemInfoCompleta.mensagem
+        if(!isGroupMsg) return true
+        const al_status = await obterGrupoInfo(groupId)
+        if(!al_status?.antilinkGrupo) return true
+        if (!isBotGroupAdmins) {
+            await alterarAntiLinkGrupo(groupId,false)
+        } else {
+            let mensagem = body || caption
+            if(mensagem != undefined){
+                const isUrl = mensagem.match(new RegExp(/^https:\/\/chat\.whatsapp\.com\/([A-Za-z0-9]{22})/gm))
+                console.log(isUrl)
+                if(isUrl && !groupAdmins.includes(sender)){
+                    await socket.sendTextWithMentions(c, chatId, criarTexto(msgs_texto.grupo.antilinkGrupo.detectou, sender.replace("@s.whatsapp.net", "")), [sender])
+                    await socket.deleteMessage(c, id)
+                    return false
+                }
+            }
+        }
+        return true   
+    } catch(err){
+        err.message = `antiLink grupo - ${err.message}`
+        consoleErro(err, "ANTI-LINK GRUPO")
+        return true
+    }
+}
+
 
 // Recurso AUTO-STICKER
 
