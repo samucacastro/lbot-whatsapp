@@ -1,10 +1,11 @@
 //REQUERINDO MODULOS
-import {makeWASocket, useMultiFileAuthState} from '@whiskeysockets/baileys'
+import {makeWASocket, useMultiFileAuthState, fetchLatestBaileysVersion} from '@whiskeysockets/baileys'
 import {atualizarConexao, receberMensagem, adicionadoEmGrupo, atualizacaoParticipantesGrupo, atualizacaoDadosGrupo, atualizacaoDadosGrupos, realizarEventosEspera} from './baileys/acoesEventosSocket.js'
 import configSocket from './baileys/configSocket.js'
 import { automacaoGrupos } from './controle/automacao-grupo.js'
 import moment from "moment-timezone"
 import dotenv from 'dotenv'
+import './backup/backup-database.js'
 
 moment.tz.setDefault('America/Sao_Paulo')
 dotenv.config()
@@ -12,10 +13,11 @@ dotenv.config()
 async function connectToWhatsApp(){
     let inicializacaoCompleta = false, eventosEsperando = []
     const { state, saveCreds } = await useMultiFileAuthState('auth_info_baileys')
-    const c = makeWASocket(configSocket(state))
+    const {version} = await fetchLatestBaileysVersion()
+    const c = makeWASocket(configSocket(state, version))
 
     // AUTOMAÇÃO FECHAR/ABRIR GRUPOS
-    automacaoGrupos(c, ['120363276003928592@g.us'])
+    //automacaoGrupos(c, ['120363169144052088@g.us', '5511963296699-1618489968@g.us'])
     //Status da conexão
     c.ev.on('connection.update', async (update) => {
         let necessarioReconectar = await atualizarConexao(c, update)
