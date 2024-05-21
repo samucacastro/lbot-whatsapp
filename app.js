@@ -1,5 +1,5 @@
 //REQUERINDO MODULOS
-import {makeWASocket, useMultiFileAuthState} from '@whiskeysockets/baileys'
+import {makeWASocket, useMultiFileAuthState, fetchLatestBaileysVersion} from '@whiskeysockets/baileys'
 import {atualizarConexao, receberMensagem, adicionadoEmGrupo, atualizacaoParticipantesGrupo, atualizacaoDadosGrupo, atualizacaoDadosGrupos, realizarEventosEspera} from './baileys/acoesEventosSocket.js'
 import configSocket from './baileys/configSocket.js'
 import moment from "moment-timezone"
@@ -11,7 +11,8 @@ dotenv.config()
 async function connectToWhatsApp(){
     let inicializacaoCompleta = false, eventosEsperando = []
     const { state, saveCreds } = await useMultiFileAuthState('auth_info_baileys')
-    const c = makeWASocket(configSocket(state))
+    const {version} = await fetchLatestBaileysVersion()
+    const c = makeWASocket(configSocket(state, version))
 
     //Status da conexão
     c.ev.on('connection.update', async (update) => {
