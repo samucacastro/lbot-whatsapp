@@ -8,7 +8,7 @@ export const automacaoGrupos = async (c, idGrupo) =>{
 	// Tarefa para as 22h
 	const job22h = schedule.scheduleJob({
 		timezone: "America/Sao_Paulo",
-		rule: '00 20 * * *'
+		rule: '00 23 * * *'
 	}, async () => {
 // Sua tarefa aqui
 		try{
@@ -30,7 +30,7 @@ export const automacaoGrupos = async (c, idGrupo) =>{
 // Tarefa para as 6h30
 	const job6h30 = schedule.scheduleJob({
 		timezone: "America/Sao_Paulo",
-		rule: '00 06 * * *'
+		rule: '00 09 * * *'
 	}, async () => {
 		const dados = await obterGrupoInfo(idGrupo[0])
 		const dados1 = await obterGrupoInfo(idGrupo[1])

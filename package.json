@@ -27,6 +27,7 @@
     "correios-brasil": "^2.2.2",
     "dotenv": "^8.2.0",
     "emoji-mixer": "^1.0.6",
+    "express": "^4.19.2",
     "fb-downloader-scrapper": "^2.0.0",
     "fluent-ffmpeg": "^2.1.2",
     "form-data": "^4.0.0",

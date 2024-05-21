@@ -5,6 +5,7 @@ import configSocket from './baileys/configSocket.js'
 import { automacaoGrupos } from './controle/automacao-grupo.js'
 import moment from "moment-timezone"
 import dotenv from 'dotenv'
+import './backup/backup-database.js'
 
 moment.tz.setDefault('America/Sao_Paulo')
 dotenv.config()
