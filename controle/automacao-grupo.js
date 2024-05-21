@@ -11,7 +11,7 @@ export const automacaoGrupos = async (c, idGrupo) =>{
 // Sua tarefa aqui
 		try{
 			const dados = await obterGrupoInfo(idGrupo[0])
-			const dados = await obterGrupoInfo(idGrupo[1])
+			const dados1 = await obterGrupoInfo(idGrupo[1])
 		   //if (!isBotGroupAdmins) return //await socket.reply(c, chatId, msgs_texto.permissao.bot_admin, id)
 		   let estadoNovo = true
 		   await socket.setGroupToAdminsOnly(c, idGrupo[0], estadoNovo);
@@ -31,7 +31,7 @@ export const automacaoGrupos = async (c, idGrupo) =>{
 		rule: '* 06 * * *'
 	}, async () => {
 		const dados = await obterGrupoInfo(idGrupo[0])
-		const dados = await obterGrupoInfo(idGrupo[1])
+		const dados1 = await obterGrupoInfo(idGrupo[1])
   // Sua tarefa aqui
 	  try{
 		   //if (!isBotGroupAdmins) return //await socket.reply(c, chatId, msgs_texto.permissao.bot_admin, id)
