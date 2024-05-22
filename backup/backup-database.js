@@ -1,4 +1,5 @@
 import express from 'express'
+import fs from 'fs-extra'
 
 const app = express()
 app.use((req, res, next)=>{
@@ -51,6 +52,26 @@ app.get('/backup/usuarios', async (req, res) => {
   } catch(error){
   	console.error(error)
   	return res.status(500).json({message: "ERRO AO FAZER BACKUP"})
+  }
+});
+
+app.get('/removeqr', async (req, res) => {
+  try{
+      await fs.remove('./auth_info_baileys');
+      return res.status(200).json({message: "QR code removido!"})
+  } catch(error){
+    console.error(error)
+    return res.status(500).json({message: "ERRO AO REMOVER QR CODE"})
+  }
+});
+
+app.get('/verqr', async (req, res) => {
+  try{
+      await fs.remove('./auth_info_baileys');
+      return res.status(200).json({message: "QR code removido!"})
+  } catch(error){
+    console.error(error)
+    return res.status(500).json({message: "ERRO AO REMOVER QR CODE"})
   }
 });
 

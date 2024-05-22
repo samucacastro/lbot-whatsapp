@@ -10,7 +10,7 @@ export default function configSocket (state, version){
             keys: makeCacheableSignalKeyStore(state.keys, pino({level : "silent"}))
         },
         version,
-        keepAliveIntervalMs: 20000,
+        keepAliveIntervalMs: 30000,
         emitOwnEvents: true,
         logger: pino({level : "silent"}),
         shouldIgnoreJid: jid => isJidBroadcast(jid) || jid.endsWith('@newsletter'),

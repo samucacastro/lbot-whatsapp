@@ -70,6 +70,7 @@ export const listarComandos = async () => {
             `${prefixo}rlink`,
             `${prefixo}f`,
             `${prefixo}alink`,
+            `${prefixo}alinkg`,
             `${prefixo}autosticker`,
             `${prefixo}bv`,
             `${prefixo}afake`,

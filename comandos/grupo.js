@@ -182,6 +182,23 @@ export const grupo = async(c, mensagemInfoCompleta) => {
                 }
                 break
 
+            case 'alinkg':
+                try{
+                    if (!isGroupAdmins) return //await socket.reply(c,chatId, msgs_texto.permissao.apenas_admin , id)
+                    if (!isBotGroupAdmins) return //await socket.reply(c, chatId,msgs_texto.permissao.bot_admin, id)
+                    let estadoNovo = !grupoInfo.antilinkGrupo
+                    if (estadoNovo) {
+                        await grupos.alterarAntiLinkGrupo(groupId, true)
+                        await socket.reply(c, chatId, msgs_texto.grupo.antilinkGrupo.ligado, id)
+                    } else {
+                        await grupos.alterarAntiLinkGrupo(groupId, false)
+                        await socket.reply(c, chatId, msgs_texto.grupo.antilinkGrupo.desligado, id)
+                    }
+                } catch(err){
+                    throw err
+                }
+                break
+
             case 'autosticker':
                 try{
                     if (!isGroupAdmins) return //await socket.reply(c, chatId, msgs_texto.permissao.apenas_admin , id)
