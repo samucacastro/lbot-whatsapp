@@ -23,30 +23,33 @@
 
 <br>
 
-## Última Atualização : 03/05/2024 - v2.4.6
-**[CÓDIGO]** O banco de dados NeDB foi atualizado para uma versão mais atual e estável.<br>
-**[CÓDIGO]** O armazenamento de mensagens do bot foi melhorado e migrado para um banco de dados NeDB.<br>
-**[CORREÇÃO]** Corrigido possiveis erros com Anti-Flood/Anti-Link/Contador caso o bot seja banido de um grupo.<br>
+## Última Atualização : 22/05/2024 - v2.6.6
+**[NOVO]** Suporte a mensagens de visualização única<br>
+**[NOVO]** Novo comando de admin **autorevelar** para ativar a revelação automática de mensagens de visualização única<br>
+**[NOVO]** Novo comando de admin **revelar** para revelar uma mensagem de visualização única<br>
+**[CORREÇÃO]** Corrigido o comando **rlink**
 <br>
 
 
 ## REQUERIMENTOS :
-- Um número de celular **SECUNDÁRIO** conectado ao WhatsApp para ler o QR Code e conectar o bot.
-- [NODE VERSÃO LTS](https://nodejs.org/en/) 
+- Um número de celular conectado ao WhatsApp para ler o QR Code e conectar o bot.
+- Em sistemas **Windows/Linux** :<br>
+        - Ter o [NODE VERSÃO LTS](https://nodejs.org/en/) instalado
+- No **Termux** :<br>
+        - Ter o [TERMUX](https://play.google.com/store/apps/details?id=com.termux&hl=pt_BR&gl=US) instalado no celular
 
 <br>
 
-## 1 - Faça download da ultima versão :
-Faça o download da última versão lançada no link abaixo (extraia o zip e entre na pasta para os passos seguintes):
-https://github.com/victorsouzaleal/lbot-whatsapp/releases/latest
+## 1 - Instalação :
 
-<br>
+### Windows/Linux :
 
-## 2 - Instale as dependências :
-Abra o prompt de comando (CMD/Terminal) na **PASTA DO PROJETO QUE VOCÊ EXTRAIU** e execute os comandos abaixo :
+Faça o download da última versão lançada no seguinte link: https://github.com/victorsouzaleal/lbot-whatsapp/releases/latest , extraia o zip e entre na pasta do bot para os passos seguintes.
+
+Abra o prompt de comando (terminal) **DENTRO DA PASTA DO PROJETO** e execute os comandos abaixo :
 
 ```bash
-npm i --global yarn
+npm i -g yarn
 ```
 
 Após terminar de instalar o yarn digite o comando abaixo para instalar as dependências do projeto :
@@ -55,11 +58,14 @@ Após terminar de instalar o yarn digite o comando abaixo para instalar as depen
 yarn install
 ```
 
-#### Obs: Se houver algum erro vá para o [Passo 7](https://github.com/victorsouzaleal/lbot-whatsapp#7---solu%C3%A7%C3%A3o-de-problemas-)
+<br>
+
+### Termux :
+Para ver o guia de instalação no TERMUX :  [Clique AQUI](docs/TERMUX.md)
 
 <br>
 
-## 3 - Uso :
+## 2 - Uso :
 
 **Dentro da pasta do projeto** após ter realizado todos os passos anteriores, execute este comando. 
 
@@ -67,13 +73,11 @@ yarn install
 yarn start
 ```
 
-Se for a sua primeira vez executando escaneie o QR Code com o seu celular, bot será reiniciado para criar os arquivos necessários e você deverá inicia-lo novamente.
-<br><br>
-
+Se for a sua primeira vez executando escaneie o QR Code com o seu celular.
 
 <br>
 
-## 4 - Funcionamento :
+## 3 - Funcionamento :
 Após todos os passos anteriores feitos, seu bot já deve estar iniciando normalmente, use os comandos abaixo para visualizar os comandos disponíveis.
 <br><br>
 **!menu** - Dá acesso ao MENU PRINCIPAL.
@@ -84,12 +88,10 @@ Todos os comandos agora tem um guia ao digitar **!comando guia**
 <br><br>
 
 ### Pronto! Seu bot já está ONLINE, mas ainda não acabou continue lendo o próximo passo para configuração!!
-<br>
-
 
 <br>
 
-## 5 - Configuração do bot e arquivo .env :
+## 4 - Configuração do bot e arquivo .env :
 
 ### Ao abrir o arquivo .env na raiz do projeto após iniciar o bot pela primeira vez ele vai se parecer com isso : </br>
         # CONFIGURAÇÃO DE API KEYS PARA COMANDOS
@@ -105,9 +107,9 @@ Todos os comandos agora tem um guia ao digitar **!comando guia**
 
 #### Como configurar o ADMINISTRADOR :
 Para usar as funções de **ADMINISTRADOR** digite **!admin** pela primeira vez ao iniciar ao BOT e ai seu número será cadastrado como dono.<br><br>
-Pronto, gora você tem acesso aos comandos de **ADMIN**. Use **!nomebot**, **!nomeadm**, **!nomesticker** para personalizar o nome do seu bot em menus e em stickers, e veja todos os comandos de administrador com o **!admin**.
+Pronto, agora você tem acesso aos comandos de **ADMIN**. Use **!nomebot**, **!nomeadm**, **!nomesticker** para personalizar o nome do seu bot em menus e em stickers, e veja todos os comandos de administrador com o **!admin**.
 
-<br><br>
+<br>
 
 #### Como obter as chaves API para usar em comandos específicos :
 Para usar comandos específicos como **!qualmusica** e **!ouvir** é necessário antes configurar as chaves de API no .env, abaixo tem um guia completo com imagens para obter as chaves.<br><br>
@@ -115,7 +117,7 @@ Para usar comandos específicos como **!qualmusica** e **!ouvir** é necessário
 
 <br>
 
-## 6 - Recursos/Comandos :
+## 5 - Recursos/Comandos :
 
 ### Figurinhas
 
@@ -123,11 +125,11 @@ Para usar comandos específicos como **!qualmusica** e **!ouvir** é necessário
 | :-----------: | :--------------------------------: |
 |       ✅       | Foto para Sticker |
 |       ✅       | Video/GIF para Sticker |
-|       ✅       | Sticker Circular |
-|       ✅       | Sticker Arrendondado |
+|       ✅       | Sticker Circular (IMAGENS) |
 |       ✅       | Texto para Sticker |
 |       ✅       | Sticker sem fundo |
 |       ✅       | Sticker para foto |
+|       ✅       | Renomear Stickers |
 |       ✅       | Auto Sticker |
 
 ### Downloads 
@@ -148,6 +150,8 @@ Para usar comandos específicos como **!qualmusica** e **!ouvir** é necessário
 |       ✅        |   Chat-GPT |
 |       ✅        |   Criação de imagens IA |
 |       ✅        |   Têndencias de Filmes/Séries |
+|       ✅        |   Encurtar Links |
+|       ✅        |   Upload de imagens |
 |       ✅        |   Efeitos de Aúdio |
 |       ✅        |   Texto para voz   |
 |       ✅        |   Áudio para texto |
@@ -163,37 +167,20 @@ Para usar comandos específicos como **!qualmusica** e **!ouvir** é necessário
 |       ✅        |   Noticias Atuais |
 |       ✅        |   Tradutor |
 
-
 <br>
 
 **Veja todos os recursos/comandos do bot** :  [Clique AQUI](docs/COMANDOS.md)
 
 <br>
 
-## 7 - Solução de Problemas :
-
-#### 1 - YARN NÃO É IDENTIFICADO COMO COMANDO:
-Provavelmente o seu Node não está com o PATH configurado nas variáveis de ambiente, recomendo deletar o Node e instalar novamente para ele configurar corretamente o PATH. Ou procure um tutorial de como adicionar o PATH para o npm/yarn.
-
-<br>
-
-#### 2 - COMANDO NÃO FUNCIONANDO :
-Se algum comando por acaso não estiver funcionando antes de tentar baixar uma nova versão ou relatar o erro tente usar dentro da pasta do projeto o comando :
-```bash
-yarn upgrade 
-```
-Esse comando atualiza as dependências e pode resolver algum problema que você tenha sem precisar baixar ou esperar uma nova versão do bot.<br><br>
-
-**Obs**: Não conseguiu resolver? Entre em contato abaixo.
-
-<br>
-
-## 8 - Contato
+## 6 - Contato
 Fiquem a vontade para tirar dúvida, ou se quiser ajudar com ideia ou com qualquer valor para o projeto. O projeto sempre será gratuito, mas não nego uma ajudinha para pagar a internet pelo menos hehe
 
 * **WhatsApp :** https://wa.me/5521995612287
 
-## 9 - Agradecimentos/Contribuições
+<br>
+
+## 7 - Agradecimentos/Contribuições
 
 * [`WhiskeySockets/Baileys`](https://github.com/WhiskeySockets/Baileys) - Biblioteca Baileys.
 * [`Samuel/samucacastro`](https://github.com/samucacastro) - Desenvolvimento de API's

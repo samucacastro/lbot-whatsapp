@@ -6,11 +6,11 @@
 | :-----------: | :--------------------------------: |
 |       ✅       | Foto para Sticker |
 |       ✅       | Video/GIF para Sticker |
-|       ✅       | Sticker Circular |
-|       ✅       | Sticker Arrendondado |
+|       ✅       | Sticker Circular (IMAGENS) |
 |       ✅       | Texto para Sticker |
 |       ✅       | Sticker sem fundo |
 |       ✅       | Sticker para foto |
+|       ✅       | Renomear Stickers |
 |       ✅       | Auto Sticker |
 
 ### Downloads 
@@ -31,6 +31,8 @@
 |       ✅        |   Chat-GPT |
 |       ✅        |   Criação de imagens IA |
 |       ✅        |   Têndencias de Filmes/Séries |
+|       ✅        |   Encurtar Links |
+|       ✅        |   Upload de imagens |
 |       ✅        |   Efeitos de Aúdio |
 |       ✅        |   Texto para voz   |
 |       ✅        |   Áudio para texto |

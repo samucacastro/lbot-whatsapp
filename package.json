@@ -1,6 +1,6 @@
 {
   "name": "lbot-whatsapp",
-  "version": "2.4.6",
+  "version": "2.6.6",
   "description": "Bot brasileiro para Whatsapp com diversas utilidades para o dia-a-dia.",
   "type": "module",
   "exports": "./app.js",
@@ -12,17 +12,14 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@deepgram/sdk": "^3.2.0",
-    "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "@hapi/boom": "^10.0.1",
-    "@sasmeee/igdl": "^1.0.0",
     "@seald-io/nedb": "^4.0.4",
     "@tobyg74/tiktok-api-dl": "^1.1.2",
     "@victorsouzaleal/googlethis": "^1.8.1",
     "@vitalets/google-translate-api": "^7.0.0",
     "@whiskeysockets/baileys": "^6.7.2",
-    "@yohancolla/ytdl": "^1.2.0",
     "acrcloud": "^1.4.0",
-    "axios": "^0.24.0",
+    "axios": "^1.6.8",
     "chalk": "^4.1.0",
     "correios-brasil": "^2.2.2",
     "dotenv": "^8.2.0",
@@ -33,12 +30,12 @@
     "format-duration-time": "^1.5.4",
     "fs-extra": "^9.0.1",
     "genius-lyrics": "^4.2.9",
-    "get-twitter-media": "^2.0.8",
     "hercai": "^12.2.0",
-    "instagram-url-direct": "^1.0.15",
+    "instagram-url-direct": "^1.0.16",
     "jimp": "^0.22.12",
     "link-preview-js": "^3.0.5",
     "moment-timezone": "^0.5.31",
+    "node-cache": "^5.1.2",
     "node-gtts": "^2.0.2",
     "node-upload-images": "^1.0.1",
     "p-queue": "^8.0.1",
@@ -46,7 +43,8 @@
     "pretty-num": "^0.5.0",
     "prompt": "^1.1.0",
     "qrcode-terminal": "^0.12.0",
-    "wa-leal-stickers": "^1.0.4",
+    "twitter-downloader": "^1.1.7",
+    "wa-leal-stickers": "^1.0.8",
     "youtube-sr": "^4.2.0",
     "ytdl-core": "4.11.5"
   },
@@ -60,5 +58,8 @@
     "bot",
     "sticker"
   ],
-  "private": false
+  "private": false,
+  "optionalDependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0"
+  }
 }
