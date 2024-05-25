@@ -12,8 +12,8 @@ export const automacaoGrupos = async (c, idGrupo) =>{
 	}, async () => {
 // Sua tarefa aqui
 		try{
-			const dados = await obterGrupoInfo(idGrupo[0])
-			const dados1 = await obterGrupoInfo(idGrupo[1])
+			// const dados = await obterGrupoInfo(idGrupo[0])
+			// const dados1 = await obterGrupoInfo(idGrupo[1])
 		   //if (!isBotGroupAdmins) return //await socket.reply(c, chatId, msgs_texto.permissao.bot_admin, id)
 		   let estadoNovo = true
 		   await socket.setGroupToAdminsOnly(c, idGrupo[0], estadoNovo);
@@ -22,8 +22,8 @@ export const automacaoGrupos = async (c, idGrupo) =>{
 		   await socket.sendText(c, idGrupo[1], "Grupo fechado automaticamente, reabriremos às 06:00. Bom descanso a todos!");
 		   console.log("GRUPOS FECHADO AUTOMATICAMENTE")
 		 } catch(err){
-		 	console.log(err)
-		    throw err
+		 	console.log("AUTOMAÇÃO GRUPOS: "+err);
+		 	return
 		  }
 	});
 
@@ -32,8 +32,8 @@ export const automacaoGrupos = async (c, idGrupo) =>{
 		timezone: "America/Sao_Paulo",
 		rule: '00 09 * * *'
 	}, async () => {
-		const dados = await obterGrupoInfo(idGrupo[0])
-		const dados1 = await obterGrupoInfo(idGrupo[1])
+		// const dados = await obterGrupoInfo(idGrupo[0])
+		// const dados1 = await obterGrupoInfo(idGrupo[1])
   // Sua tarefa aqui
 	  try{
 		   //if (!isBotGroupAdmins) return //await socket.reply(c, chatId, msgs_texto.permissao.bot_admin, id)
@@ -44,7 +44,8 @@ export const automacaoGrupos = async (c, idGrupo) =>{
 		   await socket.sendText(c, idGrupo[1], "Grupo aberto automaticamente!");
 		   console.log("GRUPOS ABERTO AUTOMATICAMENTE")
 		 } catch(err){
-		    throw err
+		 	console.log("AUTOMAÇÃO GRUPOS: "+err)
+		    return
 		  }
  	});
 }
