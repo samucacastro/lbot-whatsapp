@@ -21,7 +21,7 @@ export class BotControle{
         try{
             let bot = botInfo
             bot.iniciado = moment.now()
-            bot.hostNumber = await socket.obterNumeroHost(c)
+            bot.numero_bot = await socket.obterNumeroHost(c)
             await this.bot.atualizarDados(bot)
             console.log("[BOT]", corTexto(obterMensagensTexto(bot).inicio.dados_bot))
         }catch(err){
@@ -37,7 +37,6 @@ export class BotControle{
             nome_adm: "Leal",
             nome_pack: "LBOT Stickers",
             prefixo: "!",
-            numero_dono:"",
             cmds_executados:0,
             autosticker: false,
             autorevelar: false,
@@ -278,7 +277,7 @@ export class BotControle{
         try{
             const msgs_texto = obterMensagensTexto(botInfo)
             const {mensagem, nome_usuario : nomeUsuario, remetente, mensagem_grupo, tipo, grupo} = mensagemBaileys
-            const {numero_dono : numeroDono} = botInfo
+            const numeroDono = await new UsuarioControle().obterIdDono()
             const numeroUsuario = remetente.replace("@s.whatsapp.net", '')
             const nomeGrupo = mensagem_grupo ? grupo.nome : '----'
             const tipoMensagem = obterTipoDeMensagem(tipo)
@@ -293,19 +292,13 @@ export class BotControle{
     }
 
     async obterNumeroBot(){
-        let {hostNumber} = await this.obterInformacoesBot()
-        return hostNumber
+        let {numero_bot} = await this.obterInformacoesBot()
+        return numero_bot
     }
 
     async obterNumeroDono(){
         let {numero_dono} = await this.obterInformacoesBot()
         return numero_dono
-    }
-
-    async alterarNumeroDono(numero, botInfo){
-        let bot = botInfo
-        bot.numero_dono = numero
-        await this.bot.atualizarDados(bot)
     }
 
     async alterarPrefixo(prefixo, botInfo){
@@ -314,11 +307,45 @@ export class BotControle{
         await this.bot.atualizarDados(bot)
     }
 
-    async alterarQtdLimiteDiarioTipo(tipo, limite, botInfo){
+    async alterarComandosTipoUsuario(tipo, comandos, botInfo){
         let bot = botInfo
-        if(limite == -1) limite = null
-        if(bot.limite_diario.limite_tipos[tipo] === undefined) return false
-        bot.limite_diario.limite_tipos[tipo].comandos = parseInt(limite)
+        let tiposAtuais = Object.keys(bot.limite_diario.limite_tipos)
+        comandos = (comandos == -1) ? null : comandos
+        if(!tiposAtuais.includes(tipo)) return false
+        bot.limite_diario.limite_tipos[tipo].comandos = parseInt(comandos)
+        await this.bot.atualizarDados(bot)
+        return true
+    }
+
+    async adicionarTipoUsuario(botInfo, tipo, titulo, comandos){
+        let bot = botInfo
+        let tiposAtuais = Object.keys(bot.limite_diario.limite_tipos)
+        let tipoInserido = tipo.toLowerCase().replaceAll(" ", '')
+        if(tiposAtuais.includes(tipoInserido)) return false
+        comandos = (comandos == -1) ? null : comandos
+        bot.limite_diario.limite_tipos[tipoInserido] = {titulo, comandos : parseInt(comandos)}
+        await this.bot.atualizarDados(bot)
+        return true
+    }
+
+    async alterarTituloTipoUsuario(botInfo, tipo, titulo){
+        let bot = botInfo
+        let tiposAtuais = Object.keys(bot.limite_diario.limite_tipos)
+        let tipoInserido = tipo.toLowerCase().replaceAll(" ", '')
+        if(!tiposAtuais.includes(tipoInserido)) return false
+        bot.limite_diario.limite_tipos[tipoInserido].titulo = titulo
+        await this.bot.atualizarDados(bot)
+        return true
+    }
+
+    async removerTipoUsuario(botInfo, tipo){
+        const tiposNaoRemoviveis = ['comum', 'dono']
+        let bot = botInfo
+        let tiposAtuais = Object.keys(bot.limite_diario.limite_tipos)
+        let tipoInserido = tipo.toLowerCase().replaceAll(" ", '')
+        if(!tiposAtuais.includes(tipoInserido)) return false
+        if(tiposNaoRemoviveis.includes(tipoInserido)) return false
+        delete bot.limite_diario.limite_tipos[tipoInserido]
         await this.bot.atualizarDados(bot)
         return true
     }
@@ -376,5 +403,4 @@ export class BotControle{
         bot.nome_pack = nome
         await this.bot.atualizarDados(bot)
     }
-
 }

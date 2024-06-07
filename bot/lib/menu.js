@@ -156,9 +156,9 @@ export const menuGrupo = (admin, botInfo)=>{
 |
 |--〖🗒️ *LISTA NEGRA*〗
 |
-|- *${prefixo}blista* +55 (21) 9xxxx-xxxx - Adiciona o número na lista negra do grupo.
-|- *${prefixo}dlista* +55 (21) 9xxxx-xxxx - Remove o número na lista negra do grupo.
 |- *${prefixo}listanegra* - Exibe a lista negra do grupo.
+|- *${prefixo}addlista* +55 (21) 9xxxx-xxxx - Adiciona o número na lista negra do grupo.
+|- *${prefixo}remlista* +55 (21) 9xxxx-xxxx - Remove o número na lista negra do grupo.
 |
 |--〖🧰 *RECURSOS*〗 
 |
@@ -173,12 +173,12 @@ export const menuGrupo = (admin, botInfo)=>{
 |
 |- *${prefixo}add* +55 (21) 9xxxx-xxxx - Adiciona ao grupo.
 |- *${prefixo}ban* @marcarmembro - Bane do grupo.
-|- *${prefixo}f* - Abre/fecha o grupo.
+|- *${prefixo}restrito* - Abre/Restringe o grupo só para ADMS.
 |- *${prefixo}promover* @marcarmembro - Promove a ADM.
 |- *${prefixo}rebaixar* @marcaradmin - Rebaixa a MEMBRO.
 |- *${prefixo}link* - Exibe o link do grupo.
 |- *${prefixo}rlink* - Redefine o link do grupo.
-|- *${prefixo}apg* - Apaga mensagem do BOT.
+|- *${prefixo}apg* - Apaga uma mensagem do grupo.
 |- *${prefixo}bantodos* - Bane todos os membros.
 |
 |--〖📊 *ENQUETE*〗
@@ -277,7 +277,7 @@ export const menuAdmin = (botInfo)=>{
 |
 |--〖🛠️ *GERAL*〗
 |
-|- *${prefixo}infocompleta* - Informação completa do BOT.
+|- *${prefixo}infobot* - Informação completa do BOT.
 |- *${prefixo}ping* - Informação do sistema e de tempo de resposta.
 |- *${prefixo}bloquear* @usuario  - Bloqueia o usuário mencionado.
 |- *${prefixo}desbloquear* @usuario  - Desbloqueia o usuário mencionado.
@@ -285,23 +285,32 @@ export const menuAdmin = (botInfo)=>{
 |- *${prefixo}bcgrupos* mensagem - Faz um anúncio com uma mensagem somente para os GRUPOS.
 |- *${prefixo}desligar* - Desliga o bot.
 |
+|--〖👤 *USUÁRIOS*〗
+|
+|- *${prefixo}verdados* @usuario - Mostra os dados do usuario cadastrado no bot.
+|- *${prefixo}usuarios* tipo - Mostra todos os usuários do tipo escolhido.
+|- *${prefixo}tipos* - Mostra todos os tipos de usuário disponíveis.
+|- *${prefixo}novotipo* tipo, titulo, comandos - Cria um novo tipo de usuário.
+|- *${prefixo}tipotitulo* tipo, titulo - Altera o titulo de um tipo de usuário.
+|- *${prefixo}deltipo* tipo - Deleta um tipo de usuário.
+|- *${prefixo}usuariotipo* tipo @usuario - Muda o tipo de conta do usuário.
+|- *${prefixo}limpartipo* tipo - Limpa todos os usuários desse tipo e transforma em usuarios comuns.
+|
 |--〖🚫 *BLOQUEIO DE COMANDOS*〗 
 |
 |- *${prefixo}bcmdglobal* comando1 comando2 - Bloqueia os comandos escolhidos globalmente.
 |- *${prefixo}dcmdglobal* comando1 comando2 - Desbloqueia os comandos escolhidos globalmente.
 |
-|--〖👤 *USUÁRIOS/LIMITES*〗
+|--〖👤 *LIMITE DIÁRIO COMANDOS*〗
 |
-|- *${prefixo}verdados* @usuario - Mostra os dados do usuario cadastrado no bot.
-|- *${prefixo}tipos* - Mostra todos os tipos de usuário disponíveis.
-|- *${prefixo}alterartipo* tipo @usuario - Muda o tipo de conta do usuário.
-|- *${prefixo}limpartipo* tipo - Limpa todos os usuários desse tipo e transforma em usuarios comuns.
-|- *${prefixo}usuarios* tipo - Mostra todos os usuários do tipo escolhido.
-|- *${prefixo}taxalimite* qtd-comandos tempo-bloqueio - Ativa/desativa a taxa de comandos por minuto.
-|- *${prefixo}limitediario* - Ativa/desativa o limite diario de comandos por dia.
-|- *${prefixo}mudarlimite* tipo qtd-comandos - Muda o limite de comandos por dia de um tipo de usuário.
+|- *${prefixo}limitediario* - Ativa/desativa o limite diario de comandos por dia de acordo com tipo de usuário.
+|- *${prefixo}tipocomandos* tipo qtd-comandos - Muda o limite de comandos por dia de um tipo de usuário.
 |- *${prefixo}rtodos* - Reseta os comandos diários de todos usuários.
 |- *${prefixo}r* @usuario - Reseta os comandos diários de um usuário.
+|
+|--〖👤 *TAXA COMANDOS POR MINUTO*〗
+|
+|- *${prefixo}taxacomandos* qtd-comandos - Ativa/desativa a taxa de comandos por minuto.
 |
 |--〖👁️ *REVELAR MENSAGENS*〗
 |

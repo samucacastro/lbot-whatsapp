@@ -18,7 +18,8 @@ export const admin = async(c, mensagemBaileys, botInfo) => {
     const usuarios = new UsuarioControle()
     const grupos = new GrupoControle()
     const msgs_texto = obterMensagensTexto(botInfo)
-    const {numero_dono, hostNumber : numero_bot, prefixo, nome_bot, nome_adm} = botInfo
+    const numero_dono = await usuarios.obterIdDono()
+    const {numero_bot, prefixo, nome_bot, nome_adm} = botInfo
     const {
         mensagem_dono,
         texto_recebido,
@@ -53,30 +54,30 @@ export const admin = async(c, mensagemBaileys, botInfo) => {
                 }
                 break
 
-            case "infocompleta":
+            case "infobot":
                 try{
                     let version = versaoAtual()
                     let infoBot = botInfo
                     let expiracaoLimiteDiario = timestampParaData(infoBot.limite_diario.expiracao * 1000)
                     let botInicializacaoData = timestampParaData(infoBot.iniciado)
-                    let resposta = criarTexto(msgs_texto.admin.infocompleta.resposta_superior, nome_adm?.trim(), nome_bot?.trim(), botInicializacaoData, version)
+                    let resposta = criarTexto(msgs_texto.admin.infobot.resposta_superior, nome_adm?.trim(), nome_bot?.trim(), botInicializacaoData, version)
                     // AUTO-STICKER
-                    resposta += (infoBot.autosticker) ? msgs_texto.admin.infocompleta.resposta_variavel.autosticker.on: msgs_texto.admin.infocompleta.resposta_variavel.autosticker.off
+                    resposta += (infoBot.autosticker) ? msgs_texto.admin.infobot.resposta_variavel.autosticker.on: msgs_texto.admin.infobot.resposta_variavel.autosticker.off
                     // AUTO-REVELAR
-                    resposta += (infoBot.autorevelar) ? msgs_texto.admin.infocompleta.resposta_variavel.autorevelar.on: msgs_texto.admin.infocompleta.resposta_variavel.autorevelar.off
+                    resposta += (infoBot.autorevelar) ? msgs_texto.admin.infobot.resposta_variavel.autorevelar.on: msgs_texto.admin.infobot.resposta_variavel.autorevelar.off
                     // PV LIBERADO
-                    resposta += (infoBot.pvliberado) ? msgs_texto.admin.infocompleta.resposta_variavel.pvliberado.on: msgs_texto.admin.infocompleta.resposta_variavel.pvliberado.off
+                    resposta += (infoBot.pvliberado) ? msgs_texto.admin.infobot.resposta_variavel.pvliberado.on: msgs_texto.admin.infobot.resposta_variavel.pvliberado.off
                     // LIMITE COMANDOS DIARIO
-                    resposta += (infoBot.limite_diario.status) ? criarTexto(msgs_texto.admin.infocompleta.resposta_variavel.limite_diario.on,  expiracaoLimiteDiario) : msgs_texto.admin.infocompleta.resposta_variavel.limite_diario.off
+                    resposta += (infoBot.limite_diario.status) ? criarTexto(msgs_texto.admin.infobot.resposta_variavel.limite_diario.on,  expiracaoLimiteDiario) : msgs_texto.admin.infobot.resposta_variavel.limite_diario.off
                     // LIMITE COMANDOS POR MINUTO
-                    resposta += (infoBot.limitecomandos.status) ? criarTexto(msgs_texto.admin.infocompleta.resposta_variavel.taxa_comandos.on, infoBot.limitecomandos.cmds_minuto_max, infoBot.limitecomandos.tempo_bloqueio) : msgs_texto.admin.infocompleta.resposta_variavel.taxa_comandos.off
+                    resposta += (infoBot.limitecomandos.status) ? criarTexto(msgs_texto.admin.infobot.resposta_variavel.taxa_comandos.on, infoBot.limitecomandos.cmds_minuto_max, infoBot.limitecomandos.tempo_bloqueio) : msgs_texto.admin.infobot.resposta_variavel.taxa_comandos.off
                     // BLOQUEIO DE COMANDOS
                     let comandosBloqueados = []
                     for(let comandoBloqueado of infoBot.bloqueio_cmds){
                         comandosBloqueados.push(prefixo+comandoBloqueado)
                     }
-                    resposta += (infoBot.bloqueio_cmds.length != 0) ? criarTexto(msgs_texto.admin.infocompleta.resposta_variavel.bloqueiocmds.on, comandosBloqueados.toString()) : msgs_texto.admin.infocompleta.resposta_variavel.bloqueiocmds.off
-                    resposta += criarTexto(msgs_texto.admin.infocompleta.resposta_inferior, usuariosBloqueados.length, infoBot.cmds_executados, numero_dono.replace("@s.whatsapp.net", ""))
+                    resposta += (infoBot.bloqueio_cmds.length != 0) ? criarTexto(msgs_texto.admin.infobot.resposta_variavel.bloqueiocmds.on, comandosBloqueados.toString()) : msgs_texto.admin.infobot.resposta_variavel.bloqueiocmds.off
+                    resposta += criarTexto(msgs_texto.admin.infobot.resposta_inferior, usuariosBloqueados.length, infoBot.cmds_executados, numero_dono.replace("@s.whatsapp.net", ""))
                     await socket.obterFotoPerfil(c, numero_bot).then(async (fotoBot)=>{
                         await socket.responderArquivoUrl(c, MessageTypes.image, id_chat, fotoBot, resposta, mensagem)
                     }).catch(async ()=>{
@@ -313,12 +314,13 @@ export const admin = async(c, mensagemBaileys, botInfo) => {
 
                 break
 
-            case "taxalimite":
+            case "taxacomandos":
                 try{
                     let novoEstado = !botInfo.limitecomandos.status
                     if(novoEstado){
-                        if(args.length < 2) return await socket.responderTexto(c, id_chat, erroComandoMsg(comando, botInfo), mensagem)
+                        if(!args.length) return await socket.responderTexto(c, id_chat, erroComandoMsg(comando, botInfo), mensagem)
                         let [qtd_max_minuto, tempo_bloqueio] = args
+                        if(!tempo_bloqueio) tempo_bloqueio = 60
                         if(isNaN(qtd_max_minuto) || qtd_max_minuto < 3) return await socket.responderTexto(c, id_chat,msgs_texto.admin.limitecomandos.qtd_invalida, mensagem)
                         if(isNaN(tempo_bloqueio) || tempo_bloqueio < 10) return await socket.responderTexto(c, id_chat,msgs_texto.admin.limitecomandos.tempo_invalido, mensagem)
                         await bot.alterarLimitador(botInfo, true, parseInt(qtd_max_minuto), parseInt(tempo_bloqueio))
@@ -376,16 +378,56 @@ export const admin = async(c, mensagemBaileys, botInfo) => {
                     throw err
                 }
                 break
-            
-            case "mudarlimite":
+
+            case "novotipo":
                 try{
-                    if(!botInfo.limite_diario.status) return await socket.responderTexto(c, id_chat, msgs_texto.admin.mudarlimite.erro_limite_diario, mensagem)
+                    if(!args.length) return await socket.responderTexto(c, id_chat, erroComandoMsg(comando, botInfo), mensagem)
+                    let [tipoUsuario, tipoTitulo, tipoComandos] = texto_recebido.split(",").map(arg => {return arg.trim()})
+                    if(!tipoUsuario || !tipoTitulo || !tipoComandos) return await socket.responderTexto(c, id_chat, erroComandoMsg(comando, botInfo), mensagem)
+                    if(tipoComandos != -1 && (isNaN(tipoComandos) || tipoComandos < 10)) return await socket.responderTexto(c, id_chat, msgs_texto.admin.novotipo.erro_comandos, mensagem) 
+                    const sucesso = await bot.adicionarTipoUsuario(botInfo, tipoUsuario, tipoTitulo, tipoComandos)
+                    if(sucesso) await socket.responderTexto(c, id_chat, criarTexto(msgs_texto.admin.novotipo.sucesso_criacao, tipoUsuario.toLowerCase().replaceAll(" ", ''), tipoTitulo, tipoComandos == -1 ? "Sem limite" : tipoComandos), mensagem)
+                    else await socket.responderTexto(c, id_chat, msgs_texto.admin.novotipo.erro_criacao, mensagem)
+                } catch(err){
+                    throw err
+                }
+                break
+
+            case "deltipo":
+                try{
+                    if(!args.length) return await socket.responderTexto(c, id_chat, erroComandoMsg(comando, botInfo), mensagem)
+                    let tipoUsuario = texto_recebido.trim()
+                    await usuarios.limparTipo(tipoUsuario, botInfo)
+                    const sucesso = await bot.removerTipoUsuario(botInfo, tipoUsuario)
+                    if(sucesso)  await socket.responderTexto(c, id_chat, criarTexto(msgs_texto.admin.deltipo.sucesso_remocao, tipoUsuario.toLowerCase().replaceAll(" ", '')), mensagem)
+                    else await socket.responderTexto(c, id_chat, msgs_texto.admin.deltipo.erro_remocao, mensagem)
+                } catch(err){
+                    throw err
+                }
+                break
+
+            case 'tipotitulo':
+                try{
+                    if(!args.length) return await socket.responderTexto(c, id_chat, erroComandoMsg(comando, botInfo), mensagem)
+                    let [tipoUsuario, tipoTitulo] = texto_recebido.split(",").map(arg => {return arg.trim()})
+                    if(!tipoUsuario || !tipoTitulo) return await socket.responderTexto(c, id_chat, erroComandoMsg(comando, botInfo), mensagem)
+                    const sucesso = await bot.alterarTituloTipoUsuario(botInfo, tipoUsuario, tipoTitulo)
+                    if(sucesso) await socket.responderTexto(c, id_chat, criarTexto(msgs_texto.admin.tipotitulo.sucesso, tipoUsuario.toLowerCase().replaceAll(" ", ''), tipoTitulo), mensagem)
+                    else await socket.responderTexto(c, id_chat, msgs_texto.admin.tipotitulo.erro, mensagem)
+                } catch(err){
+                    throw err
+                }
+                break
+            
+            case "tipocomandos":
+                try{
+                    if(!botInfo.limite_diario.status) return await socket.responderTexto(c, id_chat, msgs_texto.admin.tipocomandos.erro_limite_diario, mensagem)
                     if(args.length < 2) return await socket.responderTexto(c, id_chat, erroComandoMsg(comando, botInfo), mensagem)
                     let [tipo, qtd] = args
-                    if(qtd != -1) if(isNaN(qtd) || qtd < 5) return await socket.responderTexto(c, id_chat, msgs_texto.admin.mudarlimite.invalido, mensagem)
-                    let alterou = await bot.alterarQtdLimiteDiarioTipo(tipo.toLowerCase(), parseInt(qtd), botInfo)
-                    if(!alterou) return await socket.responderTexto(c, id_chat, msgs_texto.admin.mudarlimite.tipo_invalido, mensagem)
-                    await socket.responderTexto(c, id_chat, criarTexto(msgs_texto.admin.mudarlimite.sucesso, tipo.toUpperCase(), qtd == -1 ? "∞" : qtd), mensagem)
+                    if(qtd != -1) if(isNaN(qtd) || qtd < 5) return await socket.responderTexto(c, id_chat, msgs_texto.admin.tipocomandos.invalido, mensagem)
+                    let alterou = await bot.alterarComandosTipoUsuario(tipo.toLowerCase(), parseInt(qtd), botInfo)
+                    if(!alterou) return await socket.responderTexto(c, id_chat, msgs_texto.admin.tipocomandos.tipo_invalido, mensagem)
+                    await socket.responderTexto(c, id_chat, criarTexto(msgs_texto.admin.tipocomandos.sucesso, tipo.toUpperCase(), qtd == -1 ? "∞" : qtd), mensagem)
                 } catch(err){
                     throw err
                 }
@@ -393,13 +435,13 @@ export const admin = async(c, mensagemBaileys, botInfo) => {
             
             case "usuarios":
                 try{
-                    if(!args.length) return await socket.responderTexto(c, id_chat, erroComandoMsg(comando, botInfo), mensagem)
-                    let tipo = texto_recebido.toLowerCase()
-                    let usuariosTipo = await usuarios.obterUsuariosTipo(tipo)
-                    if(!usuariosTipo.length) return await socket.responderTexto(c, id_chat, msgs_texto.admin.usuarios.nao_encontrado, mensagem)
-                    let respostaTitulo = criarTexto(msgs_texto.admin.usuarios.resposta.titulo, tipo.toUpperCase(), usuariosTipo.length)
-                    let respostaItens = ''
-                    for (let usuario of usuariosTipo) respostaItens += criarTexto(msgs_texto.admin.usuarios.resposta.item, usuario.nome, usuario.id_usuario.replace("@s.whatsapp.net", ""), usuario.comandos_total)
+                    let listaUsuarios, tipoUsuario, respostaTitulo = '', respostaItens = ''
+                    if(!args.length) tipoUsuario = 'comum'
+                    else tipoUsuario = texto_recebido.toLowerCase()
+                    listaUsuarios = await usuarios.obterUsuariosTipo(tipoUsuario)
+                    if(!listaUsuarios.length) return await socket.responderTexto(c, id_chat, msgs_texto.admin.usuarios.nao_encontrado, mensagem)
+                    respostaTitulo = criarTexto(msgs_texto.admin.usuarios.resposta.titulo, tipoUsuario , listaUsuarios.length)
+                    for (let usuario of listaUsuarios) respostaItens += criarTexto(msgs_texto.admin.usuarios.resposta.item, usuario.nome, usuario.id_usuario.replace("@s.whatsapp.net", ""), usuario.comandos_total)
                     const respostaFinal = respostaTitulo + respostaItens
                     await socket.responderTexto(c, id_chat, respostaFinal, mensagem)
                 } catch(err){
@@ -419,7 +461,7 @@ export const admin = async(c, mensagemBaileys, botInfo) => {
                 }
                 break
 
-            case "alterartipo":
+            case "usuariotipo":
                 try{
                     if(!args.length) return await socket.responderTexto(c, id_chat, erroComandoMsg(comando, botInfo), mensagem)
                     let [tipoUsuario, usuarioAlterado] = args
@@ -427,14 +469,14 @@ export const admin = async(c, mensagemBaileys, botInfo) => {
                     else if(mencionados.length === 1) usuarioAlterado = mencionados[0]
                     else if(args.length == 2) usuarioAlterado = usuarioAlterado.replace(/\W+/g,"")+"@s.whatsapp.net"
                     else return await socket.responderTexto(c, id_chat, erroComandoMsg(comando, botInfo),mensagem)
-                    if(numero_dono == usuarioAlterado) return await socket.responderTexto(c, id_chat, msgs_texto.admin.alterartipo.tipo_dono, mensagem)
+                    if(numero_dono == usuarioAlterado) return await socket.responderTexto(c, id_chat, msgs_texto.admin.usuariotipo.tipo_dono, mensagem)
                     let c_registrado = await usuarios.verificarRegistro(usuarioAlterado)
                     if(c_registrado){
                         let alterou = await usuarios.alterarTipoUsuario(usuarioAlterado, tipoUsuario.toLowerCase(), botInfo)
-                        if(!alterou) return await socket.responderTexto(c, id_chat, msgs_texto.admin.alterartipo.tipo_invalido, mensagem)
-                        await socket.responderTexto(c, id_chat, criarTexto(msgs_texto.admin.alterartipo.sucesso, tipoUsuario.toUpperCase()), mensagem)
+                        if(!alterou) return await socket.responderTexto(c, id_chat, msgs_texto.admin.usuariotipo.tipo_invalido, mensagem)
+                        await socket.responderTexto(c, id_chat, criarTexto(msgs_texto.admin.usuariotipo.sucesso, tipoUsuario.toUpperCase()), mensagem)
                     } else {
-                        await socket.responderTexto(c, id_chat, msgs_texto.admin.alterartipo.nao_registrado, mensagem)
+                        await socket.responderTexto(c, id_chat, msgs_texto.admin.usuariotipo.nao_registrado, mensagem)
                     }
                 } catch(err){
                     throw err
@@ -445,10 +487,11 @@ export const admin = async(c, mensagemBaileys, botInfo) => {
                 try{
                     let limite_tipos = botInfo.limite_diario.limite_tipos
                     let tipos = Object.keys(limite_tipos)
-                    let respostaTitulo = criarTexto(msgs_texto.admin.tipos.resposta.titulo, tipos.length - 1)
+                    let respostaTitulo = criarTexto(msgs_texto.admin.tipos.resposta.titulo, tipos.length)
                     let respostaItens = ''
                     for (let tipo of tipos) {
-                        if(tipo != 'dono') respostaItens += criarTexto(msgs_texto.admin.tipos.resposta.item, tipo, limite_tipos[tipo].titulo, limite_tipos[tipo].comandos || "∞") 
+                        let usuariosTipo = await usuarios.obterUsuariosTipo(tipo)
+                        respostaItens += criarTexto(msgs_texto.admin.tipos.resposta.item, tipo, limite_tipos[tipo].titulo, limite_tipos[tipo].comandos || "∞", usuariosTipo.length) 
                     }
                     const respostaFinal = respostaTitulo + respostaItens
                     await socket.responderTexto(c, id_chat, respostaFinal, mensagem)

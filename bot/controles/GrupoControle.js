@@ -5,6 +5,7 @@ import * as socket from '../baileys/socket.js'
 import {consoleErro, criarTexto} from '../lib/util.js'
 import moment from "moment-timezone"
 import {MessageTypes} from '../baileys/mensagem.js'
+import {UsuarioControle} from './UsuarioControle.js'
 
 
 export class GrupoControle {
@@ -374,8 +375,11 @@ export class GrupoControle {
         try{
             if(grupoInfo.antifake.status){
                 let msgs_texto = obterMensagensTexto(botInfo)
-                let participante = evento.participants[0], botNumber = botInfo.numero_dono,  groupAdmins = grupoInfo.admins, isBotGroupAdmins = groupAdmins.includes(botNumber)
-                if(!isBotGroupAdmins){
+                let participante = evento.participants[0]
+                let grupoAdmins = grupoInfo.admins
+                let botAdmin = grupoAdmins.includes(botInfo.numero_bot)
+
+                if(!botAdmin){
                     await this.alterarAntiFake(evento.id,false)
                 } else {
                     for(ddi of grupoInfo.antifake.ddi_liberados){
@@ -487,8 +491,8 @@ export class GrupoControle {
         try {
             let msgs_texto = obterMensagensTexto(botInfo)
             for(let grupo of gruposInfo){
-                let botNumber = botInfo.hostNumber, groupAdmins = await socket.obterAdminsGrupoPorMetadata(grupo),  isBotGroupAdmins = groupAdmins.includes(botNumber)
-                if(isBotGroupAdmins){
+                let grupoAdmins = await socket.obterAdminsGrupoPorMetadata(grupo),  botAdmin = grupoAdmins.includes(botInfo.numero_bot)
+                if(botAdmin){
                     let participantesGrupo = await socket.obterMembrosGrupoPorMetadata(grupo), lista_negra = await this.obterListaNegra(grupo.id), usuarios_listados = []
                     for(let participante of participantesGrupo){
                         if(lista_negra.includes(participante)) usuarios_listados.push(participante)
@@ -508,8 +512,8 @@ export class GrupoControle {
     async verificarListaNegraUsuario(c, evento, botInfo){
         try{
             let msgs_texto = obterMensagensTexto(botInfo)
-            const botNumber = botInfo.hostNumber, groupAdmins = await this.obterAdminsGrupo(evento.id),  isBotGroupAdmins = groupAdmins.includes(botNumber)
-            if(isBotGroupAdmins){
+            const grupoAdmins = await this.obterAdminsGrupo(evento.id), botAdmin = grupoAdmins.includes(botInfo.numero_bot)
+            if(botAdmin){
                 let lista_negra = await this.obterListaNegra(evento.id)
                 if(lista_negra.includes(evento.participants[0])){
                     await socket.removerParticipante(c, evento.id, evento.participants[0])

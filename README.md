@@ -3,26 +3,38 @@
 </p>
 <h1 align="center">🤖 LBot - Robô para WhatsApp 🤖</h1>
 <p align="center">
-<a href="https://www.codefactor.io/repository/github/victorsouzaleal/lbot-whatsapp"><img src="https://www.codefactor.io/repository/github/victorsouzaleal/lbot-whatsapp/badge" alt="CodeFactor" /></a>
+<a href="https://www.codefactor.io/repository/github/victorsouzaleal/lbot-whatsapp"><img src="https://img.shields.io/codefactor/grade/github/victorsouzaleal/lbot-whatsapp?label=qualidade&color=#79C83D" alt="CodeFactor" /></a>
 </p>
 <p align="center">
-<a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fvictorsouzaleal%2Flbot-whatsapp&count_bg=%231D8ED9&title_bg=%23454545&icon=github.svg&icon_color=%23E7E7E7&title=visualizacoes&edge_flat=true"/></a>
-<a href="#"><img title="Versão" src="https://img.shields.io/github/package-json/v/victorsouzaleal/lbot-whatsapp?label=vers%C3%A3o&style=flat-square"></a>
-<a href="#"><img title="Tamanho" src="https://img.shields.io/github/repo-size/victorsouzaleal/lbot-whatsapp?label=tamanho&style=flat-square"></a>
-<a href="https://github.com/victorsouzaleal/followers"><img title="Seguidores" src="https://img.shields.io/github/followers/victorsouzaleal?label=seguidores&style=flat-square"></a>
-<a href="https://github.com/victorsouzaleal/lbot-whatsapp/stargazers/"><img title="Estrelas" src="https://img.shields.io/github/stars/victorsouzaleal/lbot-whatsapp?label=estrelas&style=flat-square"></a>
-<a href="https://github.com/victorsouzaleal/lbot-whatsapp/watchers"><img title="Acompanhando" src="https://img.shields.io/github/watchers/victorsouzaleal/lbot-whatsapp?label=acompanhando&color=blue&style=flat-square"></a>
-<a href="#"><img title="Atualizacao" src="https://img.shields.io/badge/atualizado-SIM-blue.svg"/></a>
+<a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fvictorsouzaleal%2Flbot-whatsapp&count_bg=%234dc61f&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=visualizacoes&edge_flat=false"/></a>
+<a href="#"><img title="Versão" src="https://img.shields.io/github/package-json/v/victorsouzaleal/lbot-whatsapp?label=vers%C3%A3o&color=#79C83D"/></a>
+<a href="https://github.com/victorsouzaleal/followers"><img title="Seguidores" src="https://img.shields.io/github/followers/victorsouzaleal?label=seguidores&style=flat&color=#79C83D"/></a>
+<a href="https://github.com/victorsouzaleal/lbot-whatsapp/stargazers/"><img title="Estrelas" src="https://img.shields.io/github/stars/victorsouzaleal/lbot-whatsapp?label=estrelas&style=flat&color=#79C83D"></a>
+<a href="https://github.com/victorsouzaleal/lbot-whatsapp/watchers"><img title="Acompanhando" src="https://img.shields.io/github/watchers/victorsouzaleal/lbot-whatsapp?label=acompanhando&style=flat&color=#79C83D"></a>
+<a href="https://github.com/victorsouzaleal"><img title="Autor" src="https://img.shields.io/badge/autor-victorsouzaleal-blue.svg?logo=github&color=#79C83D"></a>
 </p>
-<p align="center">
-<a href="https://github.com/victorsouzaleal"><img title="Autor" src="https://img.shields.io/badge/Autor-victorsouzaleal-blue.svg?style=for-the-badge&logo=github"></a>
-</p>
+<h3 align="center">⭐ Atualizações toda Sexta-Feira, em outros dias somente em emergência.</h3>
 
 
 <br>
 
-## 🔄 Última Atualização : 30/05/2024 - v2.7.2
-**[CORREÇÃO]** Corrigido erro ao receber mensagem que poderia ocorrer se a mensagem não fosse válida<br>
+## 🔄 Última Atualização : 07/06/2024 - v2.8.0
+**[ALTERAÇÃO]** Antes de iniciar o bot verifica qual a última versão do WhatsApp Web e usa ela.<br>
+**[ALTERAÇÃO]** O sistema de tipo de usuário foi melhorado e agora é possivel criar, deletar e modificar o titulo de exibição em menus de cada tipo.<br>
+**[NOVO]** Comando de admin **novotipo** para criar um novo tipo de usuário.<br>
+**[NOVO]** Comando de admin **deltipo** para deletar um tipo de usuário.<br>
+**[NOVO]** Comando de admin **tipotitulo** para modificar o titulo de exibição de um tipo de usuário.<br>
+**[ALTERAÇÃO]** Comando de admin **alterartipo** foi alterado para **usuariotipo**.<br>
+**[ALTERAÇÃO]** Comando de admin **taxalimite** foi alterado para **taxacomandos**.<br>
+**[ALTERAÇÃO]** Comando de admin **mudarlimite** foi alterado para **tipocomandos**.<br>
+**[ALTERAÇÃO]** Comando de admin **infocompleta** foi alterado para **infobot**.<br>
+**[ALTERAÇÃO]** Comando de grupo **f** foi alterado para **restrito**.<br>
+**[ALTERAÇÃO]** Comando de grupo **blista** foi alterado para **addlista**.<br>
+**[ALTERAÇÃO]** Comando de grupo **dlista** foi alterado para **remlista**.<br>
+**[ALTERAÇÃO]** Comando de admin **usuarios** agora exibe por padrão todos os usuários do tipo "comum" se nenhum tipo for especificado.<br>
+**[ALTERAÇÃO]** Comando de admin **tipos** agora exibe quantos usuários tem em cada tipo.<br>
+**[ALTERAÇÃO]** Comando de admin **taxacomandos** agora tem como tempo de bloqueio padrão 60 segundos se nenhum tempo de bloqueio for especificado.<br>
+**[CODIGO]** Refatoração e correções gerais no código.
 <br>
 
 
@@ -114,57 +126,47 @@ Para usar comandos específicos como **!qualmusica** e **!ouvir** é necessário
 
 ## 5 - 🛠️ Recursos/Comandos :
 
-### Figurinhas
+### 🖼️ Figurinhas
+- Foto para sticker ✅
+- Video/gif para sticker ✅
+- Texto para sticker ✅
+- Sticker para foto ✅
+- Renomear sticker ✅
+- Auto sticker ✅
 
-| Criador de Sticker |                Recursos        |
-| :-----------: | :--------------------------------: |
-|       ✅       | Foto para Sticker |
-|       ✅       | Video/GIF para Sticker |
-|       ✅       | Sticker Circular (IMAGENS) |
-|       ✅       | Texto para Sticker |
-|       ✅       | Sticker sem fundo |
-|       ✅       | Sticker para foto |
-|       ✅       | Renomear Stickers |
-|       ✅       | Auto Sticker |
+### 📥 Downloads 
+- Youtube (video/audio) ✅
+- Facebook (video) ✅
+- Instagram (video/imagem) ✅
+- Twitter (video/imagem) ✅
+- Tiktok (video) ✅
+- Google (imagem) ✅
 
-### Downloads 
 
-| Downloads      |                Recursos            |
-| :------------: | :---------------------------------------------: |
-|       ✅        |   Download de aúdio/videos (Youtube)    |
-|       ✅        |   Download de videos (Facebook)            |
-|       ✅        |   Download de imagens/videos (Instagram)  |
-|       ✅        |   Download de imagens/videos (Twitter)            |
-|       ✅        |   Download de videos (Tiktok)            |
-|       ✅        |   Pesquisa/Download de Imagens                  |
-
-### Utilidades Gerais
-
-| Utilitários |                     Recursos            |
-| :------------: | :---------------------------------------------: |
-|       ✅        |   Chat-GPT |
-|       ✅        |   Criação de imagens IA |
-|       ✅        |   Têndencias de Filmes/Séries |
-|       ✅        |   Encurtar Links |
-|       ✅        |   Upload de imagens |
-|       ✅        |   Efeitos de Aúdio |
-|       ✅        |   Texto para voz   |
-|       ✅        |   Áudio para texto |
-|       ✅        |   Letra de Música  |
-|       ✅        |   Reconhecimento de músicas |
-|       ✅        |   Detector de DDD |
-|       ✅        |   Consulta de Clima/Previsão do Tempo |
-|       ✅        |   Conversão de Moedas |
-|       ✅        |   Calculadora básica  |
-|       ✅        |   Pesquisa Web        |
-|       ✅        |   Detector Anime      |
-|       ✅        |   Rastreamento Correios |
-|       ✅        |   Noticias Atuais |
-|       ✅        |   Tradutor |
+### ⚒️ Utilidades Gerais
+- Chat-GPT ✅
+- Criação de imagens IA ✅
+- Têndencias de Filmes/Séries ✅
+- Encurtar Links ✅
+- Upload de imagens ✅
+- Efeitos de Aúdio ✅
+- Texto para voz ✅
+- Áudio para texto ✅
+- Letra de Música ✅
+- Reconhecimento de músicas ✅ 
+- Detector de DDD ✅
+- Consulta de Clima/Previsão do Tempo ✅
+- Conversão de Moedas ✅
+- Calculadora ✅
+- Pesquisa Google ✅      
+- Detector Anime ✅     
+- Rastreamento Correios ✅ 
+- Noticias Google ✅ 
+- Tradutor Google ✅
 
 <br>
 
-**Veja todos os recursos/comandos do bot** :  [Clique AQUI](docs/COMANDOS.md)
+### 👉 E muito mais... [Clique AQUI](docs/COMANDOS.md)
 
 <br>
 
@@ -173,7 +175,6 @@ Fiquem a vontade para tirar dúvida, ou se quiser ajudar com ideia ou com qualqu
 
 * **Discord :** victorsouzaleal
 * **Email :** victorsouzaleal@gmail.com
-* **X/Twitter :** @victorsouzaleal
 
 <br>
 
