@@ -18,6 +18,7 @@
     "@seald-io/nedb": "^4.0.4",
     "@tobyg74/tiktok-api-dl": "^1.1.2",
     "@victorsouzaleal/googlethis": "^1.8.1",
+    "@victorsouzaleal/lbot-api-comandos": "^1.0.2",
     "@vitalets/google-translate-api": "^7.0.0",
     "@whiskeysockets/baileys": "^6.7.2",
     "@yohancolla/ytdl": "^1.2.0",

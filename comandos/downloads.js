@@ -6,6 +6,7 @@ import * as socket from '../baileys/socket-funcoes.js'
 import {MessageTypes} from '../baileys/mensagem.js'
 import axios from 'axios'
 import duration from 'format-duration-time'
+import newApi from '@victorsouzaleal/lbot-api-comandos'
 
 
 export const downloads = async(c, mensagemInfoCompleta) => {
@@ -19,27 +20,18 @@ export const downloads = async(c, mensagemInfoCompleta) => {
         switch(cmdSemPrefixo){      
             case "play":
                 try{
-                    if(args.length === 1) return await socket.reply(c, chatId,await erroComandoMsg(command),id)
+                    if(!args.length) return await socket.reply(c, chatId,erroComandoMsg(command),id)
                     let usuarioTexto = textoRecebido.slice(6).trim()
-                    await api.obterInfoVideoYT(usuarioTexto).then(async({resultado})=>{
-                        if(resultado.isLiveContent) await socket.reply(c, chatId,msgs_texto.downloads.play.erro_live,id)
-                        else if (resultado.lengthSeconds > 300) await socket.reply(c, chatId, msgs_texto.downloads.play.limite, id)
-                        else {
-                            let mensagemEspera = criarTexto(msgs_texto.downloads.play.espera, resultado.title, resultado.durationFormatted)
-                            await socket.reply(c, chatId, mensagemEspera, id)
-                            await api.obterYTMP3(resultado.videoId).then(async ({resultado})=>{
-                                await socket.replyFileFromBuffer(c, MessageTypes.audio, chatId, resultado, '', id, 'audio/mpeg')
-                            }).catch(async err=>{
-                                if(!err.erro) throw err
-                                await socket.reply(c, chatId, criarTexto(msgs_texto.geral.erro_api, command, err.erro) , id)
-                            })
-                        }
-                    }).catch(async err=>{
-                        if(!err.erro) throw err
-                        await socket.reply(c, chatId, criarTexto(msgs_texto.geral.erro_api, command, err.erro) , id)
-                    })
+                    const {resultado: resultadoInfoVideo} = await newApi.Downloads.obterInfoVideoYT(usuarioTexto)
+                    if(resultadoInfoVideo.isLiveContent) return await socket.reply(c, chatId,msgs_texto.downloads.play.erro_live,id)
+                    else if (resultadoInfoVideo.lengthSeconds > 300) return await socket.reply(c, chatId, msgs_texto.downloads.play.limite, id)
+                    const mensagemEspera = criarTexto(msgs_texto.downloads.play.espera, resultadoInfoVideo.title, resultadoInfoVideo.durationFormatted)
+                    await socket.reply(c, chatId, mensagemEspera, id)
+                    const {resultado : resultadoYTMP3} = await newApi.Downloads.obterYTMP3(resultadoInfoVideo.videoId)
+                    await socket.replyFileFromBuffer(c, MessageTypes.audio, chatId, resultadoYTMP3, '', id, 'audio/mpeg')
                 } catch(err){
-                    throw err
+                    if(!err.erro) throw err
+                    await socket.reply(c, chatId, criarTexto(msgs_texto.geral.erro_api, command, err.erro) , id)
                 }
                 break
             
