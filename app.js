@@ -9,7 +9,7 @@ import './backup/backup-database.js'
 
 moment.tz.setDefault('America/Sao_Paulo')
 dotenv.config()
-
+export let qrCode = "";
 async function connectToWhatsApp(){
     let inicializacaoCompleta = false, eventosEsperando = []
     const { state, saveCreds } = await useMultiFileAuthState('auth_info_baileys')
@@ -23,6 +23,8 @@ async function connectToWhatsApp(){
     c.ev.on('connection.update', async (update) => {
         let necessarioReconectar = await atualizarConexao(c, update)
         if(necessarioReconectar) connectToWhatsApp()
+        const { qr } = update || {};
+        qrCode = qr;
     })
 
     // Ao receber novas mensagens

@@ -26,6 +26,7 @@
     "axios": "^0.24.0",
     "chalk": "^4.1.0",
     "correios-brasil": "^2.2.2",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "emoji-mixer": "^1.0.6",
     "express": "^4.19.2",
