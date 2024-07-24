@@ -2,9 +2,9 @@
 import * as bot from '../controle/botControle.js'
 
 export const listarComandos = async () => {
-    let {prefixo} = await bot.obterInformacoesBot()
+    let { prefixo } = await bot.obterInformacoesBot()
     return {
-        utilidades :[
+        utilidades: [
             `${prefixo}filmes`,
             `${prefixo}series`,
             `${prefixo}gpt`,
@@ -24,9 +24,10 @@ export const listarComandos = async () => {
             `${prefixo}clima`,
             `${prefixo}ddd`,
             `${prefixo}anime`,
+            `${prefixo}news`,
             `${prefixo}qualmusica`
         ],
-        info:[
+        info: [
             `${prefixo}menu`,
             `${prefixo}reportar`,
             `${prefixo}meusdados`,
@@ -49,7 +50,7 @@ export const listarComandos = async () => {
             `${prefixo}tk`,
             `${prefixo}img`
         ],
-        grupo:[
+        grupo: [
             `${prefixo}status`,
             `${prefixo}fotogrupo`,
             `${prefixo}regras`,
@@ -78,14 +79,14 @@ export const listarComandos = async () => {
             `${prefixo}apg`,
             `${prefixo}bantodos`,
             `${prefixo}topativos`,
-            `${prefixo}contador`, 
+            `${prefixo}contador`,
             `${prefixo}atividade`,
             `${prefixo}imarcar`,
             `${prefixo}ibanir`,
             `${prefixo}bcmd`,
             `${prefixo}dcmd`
         ],
-        diversao:[
+        diversao: [
             `${prefixo}mascote`,
             `${prefixo}simi`,
             `${prefixo}des`,
@@ -100,10 +101,10 @@ export const listarComandos = async () => {
             `${prefixo}top5`,
             `${prefixo}par`,
             `${prefixo}malacos`,
-            `${prefixo}chance`, 
+            `${prefixo}chance`,
             `${prefixo}fch`
         ],
-        admin:[
+        admin: [
             `${prefixo}sair`,
             `${prefixo}pvliberado`,
             `${prefixo}bcmdglobal`,
@@ -151,4 +152,3 @@ export const listarComandos = async () => {
 }
 
 
-    
