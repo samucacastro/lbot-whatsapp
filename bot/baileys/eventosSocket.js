@@ -1,7 +1,7 @@
 import {DisconnectReason, getContentType} from '@whiskeysockets/baileys'
 import { Boom } from '@hapi/boom'
 import {criarTexto, consoleErro, corTexto, verificarEnv, criarArquivosNecessarios, verificarNumeroDono, versaoAtual} from'../lib/util.js'
-import {obterMensagensTexto} from '../lib/msgs.js' 
+import {comandosInfo} from '../comandos/comandos.js'
 import fs from "fs-extra"
 import * as socket from './socket.js'
 import {converterMensagem, tiposPermitidosMensagens}  from './mensagem.js'
@@ -14,22 +14,22 @@ import dotenv from 'dotenv'
 
 
 export const conexaoEncerrada = async(conexao, botInfo)=>{
-    const msgs_texto = obterMensagensTexto(botInfo)
+    const comandos_info = comandosInfo(botInfo)
     const { lastDisconnect } = conexao
     let reconectar = false
     const erroCodigo = (new Boom(lastDisconnect.error))?.output?.statusCode
     if(lastDisconnect.error.message == "Comando"){
-        consoleErro(msgs_texto.geral.desconectado.comando, "DESCONECTADO")
+        consoleErro(comandos_info.outros.desconectado.comando, "DESCONECTADO")
     } else if( lastDisconnect.error.message == "erro_geral"){
-        consoleErro(msgs_texto.geral.desconectado.falha_grave, "DESCONECTADO")
+        consoleErro(comandos_info.outros.desconectado.falha_grave, "DESCONECTADO")
     } else {
         if(erroCodigo == DisconnectReason?.loggedOut){
             fs.rmSync("./sessao", {recursive: true, force: true})
-            consoleErro(msgs_texto.geral.desconectado.deslogado, "DESCONECTADO")
+            consoleErro(comandos_info.outros.desconectado.deslogado, "DESCONECTADO")
         } else if(erroCodigo == DisconnectReason?.restartRequired){
-            consoleErro(msgs_texto.geral.desconectado.reiniciar, "DESCONECTADO")
+            consoleErro(comandos_info.outros.desconectado.reiniciar, "DESCONECTADO")
         } else {
-            consoleErro(criarTexto(msgs_texto.geral.desconectado.conexao, erroCodigo, lastDisconnect.error.message), "DESCONECTADO")
+            consoleErro(criarTexto(comandos_info.outros.desconectado.conexao, erroCodigo, lastDisconnect.error.message), "DESCONECTADO")
         }
         reconectar = true
     }
@@ -38,13 +38,12 @@ export const conexaoEncerrada = async(conexao, botInfo)=>{
 
 export const conexaoAberta = async(c, botInfo)=>{
     try{
-        console.log(criarTexto(obterMensagensTexto(botInfo).inicio.inicializando, versaoAtual()))
+        console.log(criarTexto(comandosInfo(botInfo).outros.inicializando, versaoAtual()))
         await criarArquivosNecessarios()
         dotenv.config()
         await new BotControle().inicializarBot(c, botInfo)
         await verificarEnv()
-        await verificarNumeroDono()
-        await socket.obterTodosGrupos(c)
+        await verificarNumeroDono()        
     } catch(err){
         consoleErro(err, "Inicialização")
         c.end(new Error("erro_geral"))
@@ -78,9 +77,9 @@ export const receberMensagem = async (c, mensagem, botInfo)=>{
 
 export const adicionadoEmGrupo = async (c, dadosGrupo, botInfo)=>{
     try{
-        const msgs_texto = obterMensagensTexto(botInfo)
+        const comandos_info = comandosInfo(botInfo)
         await new GrupoControle().registrarGrupoAoSerAdicionado(dadosGrupo[0])
-        await socket.enviarTexto(c, dadosGrupo[0].id, criarTexto(msgs_texto.geral.entrada_grupo, dadosGrupo[0].subject)).catch(()=>{})
+        await socket.enviarTexto(c, dadosGrupo[0].id, criarTexto(comandos_info.outros.entrada_grupo, dadosGrupo[0].subject)).catch(()=>{})
     } catch(err){
         consoleErro(err, "GROUPS.UPSERT")
     }
@@ -119,22 +118,27 @@ export const atualizacaoParticipantesGrupo = async (c, evento, botInfo)=>{
     }
 }
 
-export const atualizacaoDadosGrupos = async (c, novosDadosGrupo, botInfo)=>{
+export const atualizacaoDadosGrupos = async (c, botInfo)=>{
     try{
-        const grupos = new GrupoControle()
-        //Cadastro de grupos
-        await grupos.registrarGruposAoIniciar(novosDadosGrupo)
-        //Atualização dos participantes dos grupos
-        await grupos.atualizarDadosGruposInicio(novosDadosGrupo)
-        //Verificar lista negra dos grupos
-        await grupos.verificarListaNegraGeral(c, novosDadosGrupo, botInfo)
-        //Atualização da contagem de mensagens
-        await grupos.atualizarContagemGrupos(novosDadosGrupo)
+        //Obtendo dados dos grupos
+        const dadosGrupos = await socket.obterTodosGrupos(c)
+        //Se não houver grupos retorne
+        if(dadosGrupos.length){
+            const grupos = new GrupoControle()
+            //Cadastro de grupos
+            await grupos.registrarGruposAoIniciar(dadosGrupos)
+            //Atualização dos participantes dos grupos
+            await grupos.atualizarDadosGruposInicio(dadosGrupos)
+            //Verificar lista negra dos grupos
+            await grupos.verificarListaNegraGeral(c, dadosGrupos, botInfo)
+            //Atualização da contagem de mensagens
+            await grupos.atualizarContagemGrupos(dadosGrupos)
+            // Log : Grupos carregados e atualizados
+            console.log('[GRUPOS]', corTexto(comandosInfo(botInfo).outros.grupos_carregados))
+        }
 
-        // Log : Grupos carregados e atualizados
-        console.log('[GRUPOS]', corTexto(obterMensagensTexto(botInfo).inicio.grupos_carregados))
         // Log : Servidor iniciado
-        console.log('[SERVIDOR]', corTexto(obterMensagensTexto(botInfo).inicio.servidor_iniciado))
+        console.log('[SERVIDOR]', corTexto(comandosInfo(botInfo).outros.servidor_iniciado))
         return true
     } catch(err){
         consoleErro(err, "GROUPS.UPDATE")

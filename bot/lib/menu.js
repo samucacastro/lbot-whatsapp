@@ -67,7 +67,7 @@ export const menuDownload = (botInfo)=>{
 |- *${prefixo}play* nome- Faz download de uma música e envia.
 |- *${prefixo}yt* nome - Faz download de um video do Youtube e envia.
 |- *${prefixo}fb* link - Faz download de um video do Facebook e envia.
-|- *${prefixo}ig* link - Faz download de um video/foto do Instagram e envia.
+|- *${prefixo}ig* link - Faz download de videos/fotos do Instagram e envia.
 |- *${prefixo}tw* link - Faz download de um video/foto do Twitter e envia.
 |- *${prefixo}tk* link - Faz download de um video do Tiktok e envia.
 |- *${prefixo}img* tema - Faz download de uma imagem e envia.
@@ -87,6 +87,9 @@ export const menuUtilidades = (botInfo)=>{
 |--〖🔎 *CONSULTAS/TEXTO* 〗
 |
 |- *${prefixo}gpt* frase - Recebe uma resposta da IA CHATGPT.
+|- *${prefixo}brasileirao* - Exibe a tabela e rodada atual do Brasileirão.
+|- *${prefixo}animes* - Exibe os ultimos lançamentos de animes.
+|- *${prefixo}mangas* - Exibe os ultimos lançamentos de mangás.
 |- *${prefixo}filmes* - Exibe as tendências atuais de filmes.
 |- *${prefixo}series* - Exibe as tendências atuais de séries.
 |- *${prefixo}encurtar* link - Encurta o link digitado.
@@ -116,7 +119,7 @@ export const menuUtilidades = (botInfo)=>{
 |--〖❔ *RECONHECIMENTO*〗
 |
 |- *${prefixo}qualmusica* - Responda um audio/video para identificar a música.
-|- *${prefixo}anime* -  Identifica o anime por foto de uma cena.
+|- *${prefixo}qualanime* -  Identifica o anime por foto de uma cena.
 |
 ╰╼❥ ${nome_bot?.trim()}® by *${nome_adm?.trim()}*`
 }
@@ -180,6 +183,10 @@ export const menuGrupo = (admin, botInfo)=>{
 |- *${prefixo}rlink* - Redefine o link do grupo.
 |- *${prefixo}apg* - Apaga uma mensagem do grupo.
 |- *${prefixo}bantodos* - Bane todos os membros.
+|
+|--〖👁️ *REVELAR MENSAGENS*〗
+|
+|- *${prefixo}revelar* - Revela o contéudo de uma mensagem de visualização única.
 |
 |--〖📊 *ENQUETE*〗
 |

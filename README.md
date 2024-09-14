@@ -13,34 +13,17 @@
 <a href="https://github.com/victorsouzaleal/lbot-whatsapp/watchers"><img title="Acompanhando" src="https://img.shields.io/github/watchers/victorsouzaleal/lbot-whatsapp?label=acompanhando&style=flat&color=#79C83D"></a>
 <a href="https://github.com/victorsouzaleal"><img title="Autor" src="https://img.shields.io/badge/autor-victorsouzaleal-blue.svg?logo=github&color=#79C83D"></a>
 </p>
-<h3 align="center">⭐ Atualizações toda Sexta-Feira, em outros dias somente em emergência.</h3>
-
 
 <br>
 
-## 🔄 Última Atualização : 07/06/2024 - v2.8.0
-**[ALTERAÇÃO]** Antes de iniciar o bot verifica qual a última versão do WhatsApp Web e usa ela.<br>
-**[ALTERAÇÃO]** O sistema de tipo de usuário foi melhorado e agora é possivel criar, deletar e modificar o titulo de exibição em menus de cada tipo.<br>
-**[NOVO]** Comando de admin **novotipo** para criar um novo tipo de usuário.<br>
-**[NOVO]** Comando de admin **deltipo** para deletar um tipo de usuário.<br>
-**[NOVO]** Comando de admin **tipotitulo** para modificar o titulo de exibição de um tipo de usuário.<br>
-**[ALTERAÇÃO]** Comando de admin **alterartipo** foi alterado para **usuariotipo**.<br>
-**[ALTERAÇÃO]** Comando de admin **taxalimite** foi alterado para **taxacomandos**.<br>
-**[ALTERAÇÃO]** Comando de admin **mudarlimite** foi alterado para **tipocomandos**.<br>
-**[ALTERAÇÃO]** Comando de admin **infocompleta** foi alterado para **infobot**.<br>
-**[ALTERAÇÃO]** Comando de grupo **f** foi alterado para **restrito**.<br>
-**[ALTERAÇÃO]** Comando de grupo **blista** foi alterado para **addlista**.<br>
-**[ALTERAÇÃO]** Comando de grupo **dlista** foi alterado para **remlista**.<br>
-**[ALTERAÇÃO]** Comando de admin **usuarios** agora exibe por padrão todos os usuários do tipo "comum" se nenhum tipo for especificado.<br>
-**[ALTERAÇÃO]** Comando de admin **tipos** agora exibe quantos usuários tem em cada tipo.<br>
-**[ALTERAÇÃO]** Comando de admin **taxacomandos** agora tem como tempo de bloqueio padrão 60 segundos se nenhum tempo de bloqueio for especificado.<br>
-**[CODIGO]** Refatoração e correções gerais no código.
-<br>
+<h2 align="center"> 🔄 Última Atualização: <a href="https://github.com/victorsouzaleal/lbot-whatsapp/releases/latest">AQUI</a> </h2>
 
+<br>
 
 ## 🚨 REQUERIMENTOS :
 - Um número de celular conectado ao WhatsApp para ler o QR Code e conectar o bot.
 - Em sistemas **Windows/Linux** :<br>
+        - Ter o [GIT](https://git-scm.com/) instalado <br>
         - Ter o [NODE VERSÃO LTS](https://nodejs.org/en/) instalado
 - No **Termux** :<br>
         - Ter o [TERMUX](https://github.com/termux/termux-app/releases/download/v0.118.0/termux-app_v0.118.0+github-debug_universal.apk) instalado no celular
@@ -55,12 +38,13 @@ Faça o download da última versão lançada no seguinte link: https://github.co
 
 Abra o prompt de comando (terminal) **DENTRO DA PASTA DO PROJETO** e execute os comandos abaixo :
 
+
+* 1.1 - Instalação do yarn (se estiver no Linux use sudo antes do comando)
 ```bash
 npm i -g yarn
 ```
 
-Após terminar de instalar o yarn digite o comando abaixo para instalar as dependências do projeto :
-
+* 1.2 - Instalação das dependências do projeto
 ```bash
 yarn install
 ```
@@ -74,13 +58,13 @@ Para ver o guia de instalação no TERMUX :  [Clique AQUI](docs/TERMUX.md)
 
 ## 2 - 🤖 Uso :
 
-**Dentro da pasta do projeto** após ter realizado todos os passos anteriores, execute este comando. 
+**Dentro da pasta do projeto** após ter realizado todos os passos anteriores, execute este comando.
 
 ```bash
 yarn start
 ```
 
-Se for a sua primeira vez executando escaneie o QR Code com o seu celular.
+Após a primeira inicialização escaneie o QR Code com o seu celular.
 
 <br>
 
@@ -146,6 +130,7 @@ Para usar comandos específicos como **!qualmusica** e **!ouvir** é necessário
 ### ⚒️ Utilidades Gerais
 - Chat-GPT ✅
 - Criação de imagens IA ✅
+- Brasileirão A/B ✅
 - Têndencias de Filmes/Séries ✅
 - Encurtar Links ✅
 - Upload de imagens ✅
@@ -170,15 +155,23 @@ Para usar comandos específicos como **!qualmusica** e **!ouvir** é necessário
 
 <br>
 
-## 6 - 👤 Contato
-Fiquem a vontade para tirar dúvida, ou se quiser ajudar com ideia ou com qualquer valor para o projeto. O projeto sempre será gratuito, mas não nego uma ajudinha para pagar a internet pelo menos hehe
+## 6 - 💻 Solução de problemas
 
-* **Discord :** victorsouzaleal
+### Termux
+Algumas pessoas podem ter problemas para instalar as depêndencias no Termux, isso pode ser pelo fato da conexão a internet não estar estável o suficiente ou a versão do Termux estar desatualizada, o Termux da Play Store não é atualizada faz anos por isso eu forneço aqui um apk oficial dos desenvolvedores do Termux.
+
+* **Termux APK :** https://github.com/termux/termux-app/releases/download/v0.118.0/termux-app_v0.118.0+github-debug_universal.apk
+
+<br>
+
+## 7 - 👤 Contato
+Caso queira entrar em contato eu tento responder aos emails, ou abra uma issue aqui no GitHub explicando o problema.
+
 * **Email :** victorsouzaleal@gmail.com
 
 <br>
 
-## 7 - 🙏 Agradecimentos/Contribuições
+## 8 - 🙏 Agradecimentos/Contribuições
 
 * [`WhiskeySockets/Baileys`](https://github.com/WhiskeySockets/Baileys) - Biblioteca Baileys.
 * [`Samuel/samucacastro`](https://github.com/samucacastro) - Desenvolvimento de API's
