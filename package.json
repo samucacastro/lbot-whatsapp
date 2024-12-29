@@ -38,7 +38,7 @@
     "fs-extra": "^9.0.1",
     "genius-lyrics": "^4.2.9",
     "get-twitter-media": "^2.0.8",
-    "hercai": "^12.2.0",
+    "hercai": "12.4.0",
     "instagram-url-direct": "^1.0.15",
     "jimp": "^0.22.12",
     "link-preview-js": "^3.0.5",
