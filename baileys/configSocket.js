@@ -1,18 +1,19 @@
 import pino from 'pino'
-import {recuperarMensagem} from '../controle/mensagensControle.js'
-import {isJidBroadcast, makeCacheableSignalKeyStore} from '@whiskeysockets/baileys'
+import { recuperarMensagem } from '../controle/mensagensControle.js'
+import { isJidBroadcast, makeCacheableSignalKeyStore } from '@whiskeysockets/baileys'
 
-export default function configSocket (state, version){
+export default function configSocket(state, version) {
     return {
         printQRInTerminal: true,
         auth: {
             creds: state.creds,
-            keys: makeCacheableSignalKeyStore(state.keys, pino({level : "silent"}))
+            keys: makeCacheableSignalKeyStore(state.keys, pino({ level: "silent" }))
         },
         version,
         keepAliveIntervalMs: 30000,
         emitOwnEvents: true,
-        logger: pino({level : "silent"}),
+        logger: pino({ level: "silent" }),
+        browser: ["Chrome (Linux)", "", ""],
         shouldIgnoreJid: jid => isJidBroadcast(jid) || jid.endsWith('@newsletter'),
         getMessage: async (key) => {
             const mensagem = await recuperarMensagem(key.remoteJid, key.id)
