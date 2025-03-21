@@ -20,7 +20,7 @@
     "@victorsouzaleal/googlethis": "^1.8.1",
     "@victorsouzaleal/lbot-api-comandos": "^1.0.2",
     "@vitalets/google-translate-api": "^7.0.0",
-    "@whiskeysockets/baileys": "^6.7.2",
+    "@whiskeysockets/baileys": "^6.7.13",
     "@yohancolla/ytdl": "^1.2.0",
     "acrcloud": "^1.4.0",
     "axios": "^0.24.0",
